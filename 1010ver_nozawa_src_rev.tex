@@ -1,0 +1,602 @@
+\documentclass{ltjsarticle}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{cleveref}
+\usepackage{bm}
+
+\theoremstyle{definition}
+\newtheorem{thm}{定理}
+\newtheorem*{thm*}{定理}
+\numberwithin{thm}{section}
+
+\theoremstyle{definition}
+\newtheorem{prop}{命題}
+\numberwithin{prop}{section}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{定義}
+\numberwithin{dfn}{section}
+
+\renewcommand{\proofname}{\textbf{証明}}
+
+\numberwithin{equation}{section}
+
+\newcounter{example}[section] % セクションごとにリセットされる「example」というカウンタを作成
+\renewcommand\theexample{\thesection--\arabic{example}} % 例のラベルのフォーマットを「セクション番号--例番号」に設定
+\newcommand\example[1]{%
+  \refstepcounter{example}% 例のカウンタを増やし、ラベルの自動生成を有効にする
+  \par\medskip\noindent
+  \textbf{例 \theexample}:\ #1\par
+}
+
+
+\begin{document}
+
+\title{「解ける微分方程式」のもつ構造について}
+\author{野澤幹太}
+\date{}
+\maketitle  % タイトルと著者を表示
+
+\begin{abstract}
+    微分方程式を解く有力な方法の一つは, 「解曲線に沿って保存される量（第一積分）」と呼ばれる量をなるべくたくさん見出すことで未知関数の数を減らしていくことである.
+    この, 第一積分を沢山求めるという戦法が上手くいくような系を（ Liouvilleの意味での）可積分系という. この解は, 座標変換することでトーラス上のKronecker軌道とみることができる. それを主張するのが今回紹介するLiouville--Arnoldの定理である.
+\end{abstract}
+
+\section{はじめに}
+この世にはたくさんの微分方程式があるが, そのほとんどが解けないものである. 一方で例外的に解ける方程式も多く知られており, この記事はそれらについてのものである. 特にこの記事で扱うのは常微分方程式系であり, Hamilton系と呼ばれるものについてである.
+
+この記事においての「解ける」の意味について説明する. ここでいう「解ける」とは「一般解が初等関数とそれらの不定積分, これらの逆関数で書けること」である. よって, 例えば変数分離形の微分方程式
+\begin{equation*}
+    u'(t)=f(u)
+\end{equation*}
+などは, 解を求める過程で出てくる積分や逆関数を計算できるとは限らないが「解ける」方程式とする.
+
+予備知識としては, 学部1年生までの線形代数,微分積分学,力学の知識があれば4章まで読むことが可能である. 一方で5章以降はベクトル解析と位相空間論に対してアレルギー反応を起こさないことが必要である.
+
+\section{Hamilton系の話}
+この章から本題に入る. 物理学で現れる微分方程式の多くはHamilton系と見ることができる.
+\begin{dfn}[Hamilton系,Hamiltonian]
+    $\bm{q},\bm{p} \in \mathbb{R}^{n}, t\in \mathbb{R}$ とする.また, $\bm{q} = (q_1, q_2, ... ,q_n), \bm{p}=(p_1,p_2, ... ,p_n)$ 
+とする。 $\mathcal{D}\subset{\mathbb{R}}^{2n}$を開集合,$H(\bm{q},\bm{p},t)$を$\mathcal{D}\times\mathbb{R}$上実数値関数とする. このとき, 以下の微分方程式系
+\begin{equation}
+\left\{ \,
+    \begin{aligned}
+    &\frac{dq_i}{dt} = \frac{\partial H}{\partial p_i} \\
+    &\frac{dp_i}{dt} = -\frac{\partial H}{\partial q_i} \\
+    \end{aligned}
+\right.
+\end{equation}
+をHamiltonの\textgt{正準方程式}という（以下ではHamilton系とも呼んでいるかもしれない）. また,関数$H$をHamiltonian, $n$を\textgt{自由度},  $\mathcal{D}$を\textgt{相空間}という. Hamiltonianが$t$に依存しないとき、この系は\textgt{自励的}であるという.
+\end{dfn}
+
+また, $\bm{z}\coloneq \prescript{t\!}{}{(q_1,q_2,...,q_n,p_1,p_2,...,p_n)}\in \mathbb{R}^{2n}$とおき, $J_n\coloneq \begin{pmatrix}
+    O&I\\
+    -I&O\\
+\end{pmatrix}$($I$は$n$次の単位行列, $O$は$n$次の零行列である)とおくと, 正準運動方程式は
+\begin{equation}
+    \frac{d\bm{z}}{dt}=J_n{\nabla}_{\bm{z}} H(\bm{z},t)
+\end{equation}
+と書ける. (ただし,${\nabla}_{\bm{z}}$は$\bm{z}$に関するナブラ演算子である.) また, $H$の$\bm{z}$に関するJacobi行列を$D_{\bm{z}}H$と書くが,  ここではこれは横ベクトルであるとする. 一方で${\nabla}_{\bm{z}}H$は縦ベクトルとする. したがって, この記事では$D_{\bm{z}}H$の転置を取ったものが${\nabla}_{\bm{z}}H$であることに注意されたい.
+
+\subsection{Hamilton系の例}
+このセクションでは具体的にどのような系がHamilton系なのかについて説明する.
+
+\example{ポテンシャル系}
+\label{ex:example1}
+$m_k (k \in \{1,2,...,n\})$を正の数とする. Hamiltonianとして, 以下のものを考える.
+
+\begin{equation}
+    H(\bm{q},\bm{p},t)=\sum_{k=1}^n \frac{1}{2m_k}p_k^2 +U(q_1,q_2,...,q_n,t)
+\end{equation}
+
+これに関する正準方程式は、
+
+\begin{equation}
+    \left\{
+    \begin{aligned}
+    &\frac{dq_k}{dt}=\frac{1}{m_k} p_k \\
+    &\frac{dp_k}{dt}=-\frac{\partial U}{\partial q_k} \\
+    \end{aligned}
+    \right.
+\end{equation}
+
+この方程式は, $p_k$を消去することで次の形になる.
+
+\begin{equation}
+    m_k\frac{d^2q_k}{dt^2}=-\frac{\partial U}{\partial p_k}
+\end{equation}
+
+これは, 保存力を受けて運動する, それぞれ位置$q_k$にある質量$m_k$の$n$個の質点の運動方程式と見ることができる. また,各$p_k$について$p_k=m_k q_k$が成り立っており, 質点の運動量であることを覚えておいてほしい. このときのHamiltonianは系の力学的エネルギーを表している. 高校の力学ではNewtonの運動方程式が全ての出発点であり, そこから力学的エネルギーや運動量などの物理量が導かれた. それとは別に, 先にHamiltonian(ポテンシャル系においてはエネルギー)の形を決め, そこからNewtonの運動方程式が導かれるという立場をとることもできる. このような記述の仕方をHamilton形式という. また, 物理学の多くの場面でこの例のような形の微分方程式系に遭遇する. 次に見る例もまたポテンシャル系の一つである.
+
+\example{調和振動子}
+\label{ex:example2}
+フックの法則に従うばねの復元力を受けて運動する質量$m$の質点を考える. 位置を$q$とすると運動方程式は, ばね定数を$k$として
+
+\begin{equation}
+    m\frac{d^2q}{dt}=-kq
+\end{equation}
+
+である. $p\coloneq m\frac{dq}{dt}$とすると, 運動方程式は
+\begin{equation}
+    \left\{
+    \begin{aligned}
+        &\frac{dq}{dt}=\frac{p}{m} \\
+        &\frac{dp}{dt}=-kq \\
+    \end{aligned}
+    \right.
+\end{equation}
+と書き直すことができるため, これは$H\coloneq\frac{p^2}{2m}+\frac{1}{2}kq^2$をHamiltonianとするHamilton系である.
+
+\example{二体問題}
+\label{ex:example3}
+二つの質点（天体だと思って欲しい）があり, 質量はそれぞれ$m_1$,$m_2$とする. これらが万有引力を受け, 互いを引きあいながら運動することを考える. 万有引力定数を$G$とする. 3次元の直交座標をとり, それぞれの質点の位置を$\bm{r}_1$,$\bm{r}_2$とする. 運動量をそれぞれ$\bm{p}_i\coloneq m_i \bm{r}_i (i=1,2)$とすると, Hamiltonianは
+\begin{equation}
+    H(\bm{r}_1,\bm{r}_2,\bm{p}_1,\bm{p}_2)=\frac{\bm{p}_1^2}{2m_1}+\frac{\bm{p}_2^2}{2m_2}-G\frac{2m_1 m_2}{|\bm{r}_1-\bm{r}_2|}
+\end{equation}
+
+また, 運動方程式は
+\begin{equation}
+    \left\{
+    \begin{aligned}
+        &m_1\frac{d^2\bm{r}_1}{dt^2}=-G\frac{m_1 m_2}{|\bm{r_1}-\bm{r_2}|^3}(\bm{r}_1-\bm{r}_2) \\
+        &m_2\frac{d^2\bm{r}_2}{dt^2}=-G\frac{m_1 m_2}{|\bm{r_1}-\bm{r_2}|^3}(r_2-r_1) \\
+    \end{aligned}
+    \right.
+\end{equation}
+となる.
+
+\subsection{正準変換}
+微分方程式を解く際, 何らかの変数変換をすることで微分方程式の形が簡単になり, 解ける場合がある. この節では, とある変数変換であって, 正準方程式に対してその変換を施して別の正準方程式が得られるようなものについて考える.
+\begin{dfn}[symplectic行列]
+$2n$次正方行列$M$が\textgt{symplectic行列}であるとは,
+\begin{equation}
+    \prescript{t\!}{}{M}J_n M=J_n
+\end{equation}
+を満たすことである.
+\end{dfn}
+
+\begin{dfn}[正準変換]
+    $\mathcal{U},\mathcal{V}\subset \mathbb{R}^{2n}$を開集合とする. 微分同相写像
+    \begin{equation}
+    \begin{aligned}
+        \bm{\varphi}:&\mathcal{U}&\to \mathcal{V} \\
+        &\bm{\zeta}&\mapsto \bm{z}
+    \end{aligned}
+    \end{equation}
+    のJacobi行列
+    \begin{equation*}
+        D\bm{\varphi}(\bm{\zeta})=\begin{pmatrix}
+            \frac{\partial z_1}{\partial \zeta_1}&\frac{\partial z_1}{\partial \zeta_2}&\cdots&\frac{\partial z_1}{\partial \zeta_{2n}} \\
+            \frac{\partial z_2}{\partial \zeta_1}&\frac{\partial z_2}{\partial \zeta_2}&\cdots&\frac{\partial z_2}{\partial \zeta_{2n}} \\
+            \vdots&\vdots&\ddots&\vdots \\
+            \frac{\partial z_{2n}}{\partial \zeta_1}&\frac{\partial z_{2n}}{\partial \zeta_2}&\cdots&\frac{\partial z_{2n}}{\partial \zeta_{2n}} \\
+        \end{pmatrix}
+    \end{equation*}
+    が任意の$\zeta \in \mathcal{U}$に対してsymplectic行列であるとき, $\bm{\varphi}$を\textgt{正準変換}という. また, このときの$\zeta$を\textgt{正準座標}という.
+\end{dfn}
+symplectic行列は正則であり, 逆行列や転置行列もsymplectic行列である. よって, $\bm{\varphi}$が正準変換であるとき, その逆写像$\bm{\varphi}^{-1}$も正準変換である.
+
+Hamilton系
+\begin{equation}
+    \frac{d\bm{z}}{dt}=J_n{\nabla}_{\bm{z}} H(\bm{z},t)
+\end{equation}
+を, 正準変換$\bm{z}=\bm{\varphi}\left(\bm{\zeta}\right)$で変数変換することを考える. $\bm{\psi}\coloneq\bm{\varphi}^{-1}$とすると,
+\begin{equation*}
+    \begin{aligned}
+        \frac{d\bm{\zeta}}{dt} &= D\bm{\psi}(\bm{z})\frac{d\bm{z}}{dt}\\
+        &= D\bm{\psi}(\bm{z})J_n\nabla_{\bm{z}}H(\bm{z},t)\\
+        &= D\bm{\psi}(\bm{z})J_n\prescript{t\!}{}{(D_{\bm{z}}H(\bm{z},t))}\\
+        &= D\bm{\psi}(\bm{z})J_n\prescript{t\!}{}{(D_{\bm{z}}H(\bm{\phi}\circ\bm{\psi}(\bm{z}),t))}\\
+        &=D\bm{\psi}(\bm{z})J_n\prescript{t\!}{}{(D_{\bm{\zeta}}H(\bm{\phi}(\bm{\zeta}),t)D\bm{\psi}(\bm{z}))}\\
+       &=D\bm{\psi}(\bm{z})J_n\prescript{t\!}{}{(D{\bm{\psi}}(\bm{z}))}\nabla_{\bm{\zeta}}H(\bm{\phi}(\bm{\zeta}),t)\\
+        &=J_n\nabla_{\bm{\zeta}}H(\bm{\varphi}(\bm{\zeta}),t)\\
+    \end{aligned}
+\end{equation*}
+ここで, 最後の行では$D\bm{\psi}$がsymplectic行列であることを用いている. 上の計算の最初と最後を見ることで, 方程式
+\begin{equation}
+    \frac{d\bm{\zeta}}{dt}=J_n\nabla_{\bm{\zeta}}H(\bm{\varphi}(\bm{\zeta}),t)
+\end{equation}
+が得られた. これは正準方程式の形をしており, この場合のHamiltonianは$H(\bm{\varphi}(\bm{z}),t)$である.
+以上の結果をまとめると, 正準方程式に正準変換を施すと, 別の正準方程式が得られる.
+
+\section{Hamilton系の保存量の話}
+物理学では多くの○○保存則と名前の付いた事柄がある. 例えば, 保存力のみを受けて運動する質点系では力学的エネルギーが保存する. また, 内力のみが働くような質点系では運動量の総和が保存する. このような保存量にあたる概念を第一積分という.
+\begin{dfn}[流れ]
+    $m$を正の整数,$\mathcal{D}$を$\mathbb{R}^m$の開集合とする. $\bm{f}:\mathcal{D}\to \mathbb{R}^m$を連続写像とする. 
+    一般に, 微分方程式
+    \begin{equation}
+        \frac{d\bm{z}}{dt}=\bm{f}(\bm{z},t)
+    \end{equation}
+    を考え, ここでは任意の初期値に対して大域解がただ一つ存在するとする. このとき, 初期値が$\bm{z}_0$であるような解を$\bm{z}(t)=\phi(\bm{z}_0,t)$と書く. このとき,$\phi$は写像$\phi:\mathcal{D}\times \mathbb{R}\to \mathbb{R}^n$である. 写像$\phi$を微分方程式の\textgt{流れ}(\textgt{フロー})という.
+\end{dfn}
+\begin{dfn}[第一積分]
+    $H(\bm{z})$を自励系Hamiltonianとする正準方程式を考える. この方程式のフローを$\phi$とする. 写像$f:\mathcal{D}\to \mathbb{R}$が第一積分であるとは, 任意の$\bm{z}_0\in \mathbb{R}^{2n}$,$t\in \mathbb{R}$に対して,
+    \begin{equation}
+        f(\phi(\bm{z}_0,t))=f(\bm{z}_0)
+    \end{equation}
+    となることである.
+\end{dfn}
+また, 次のPoisson括弧というものが役立つことが多い.
+\begin{dfn}[Poisson括弧]
+    $\mathcal{D}\subset\mathbb{R}^{2n}$を開集合とする. 二つの関数$F,G\colon\mathcal{D}\to\mathbb{R}$に対して,
+    \begin{equation}
+    \begin{aligned}
+        \{F,G \}(\bm{z})&\coloneq DG(\bm{z})J_n\nabla F(\bm{z})\\
+        &=\sum_{k=1}^{n}{\left(\frac{\partial F}{\partial p_k}\frac{\partial G}{\partial q_k}-  \frac{\partial F}{\partial q_k}\frac{\partial G}{\partial p_k}\right)}
+    \end{aligned}
+    \end{equation}
+    (ただし,$\bm{z}\coloneq(\bm{q},\bm{p})$.) $\mathcal{D}$上の関数$\{F,G\}$を$F$と$G$の\textgt{Poisson括弧}という.
+\end{dfn}
+また,次の命題が成り立つ.
+\begin{prop}
+    $H(\bm{z})$を自励的HamiltonianとするHamilton系を考える.$F(\bm{z})$が第一積分であることと, 恒等的に$\{H,F\}=0$となることは同値である.
+\end{prop}
+\begin{proof}
+    $\bm{z}(t)$を正準方程式の解とすると
+    \begin{equation*}
+        \frac{dF(\bm{z}(t))}{dt}=DF(\bm{z}(t))\frac{d\bm{z}}{dt}=DF(\bm{z}(t))J_n\nabla H(\bm{z}(t))=\{H,F\}(\bm{z})
+    \end{equation*}
+    となる. そのため, $\frac{dF(\bm{z}(t))}{dt}=0$と$\{H,F\}(\bm{z})=0$は同値である. $F$が第一積分であることとににん任意の$\bm{z}(t)$について$\frac{dF(\bm{z}(t))}{dt}=0$は同値であるため命題は示された.
+\end{proof}
+
+\subsection{第一積分の例}
+以下では第一積分の例をいくつか見る.
+\example{自励系のHamiltonian}
+自励的なHamilton系
+\begin{equation}
+\left\{ \,
+    \begin{aligned}
+    &\frac{dq_i}{dt} = \frac{\partial H}{\partial p_i} \\
+    &\frac{dp_i}{dt} = -\frac{\partial H}{\partial q_i} \\
+    \end{aligned}
+\right.
+\end{equation}
+について,$H$そのものは第一積分である. なぜなら,
+\begin{equation*}
+    \begin{aligned}
+        \frac{dH(\bm{q},\bm{p})}{dt}&=\sum_{k=1}^{n}{\frac{\partial H}{\partial q_k}\frac{dq_k}{dt}+\frac{\partial H}{\partial p_k}\frac{dp_k}{dt}}\\
+        &=\sum_{k=1}^{n}{\frac{\partial H}{\partial q_k}\frac{\partial H}{\partial p_k}-\frac{\partial H}{\partial p_k}\frac{\partial H}{\partial q_K}}\\
+        &=0
+    \end{aligned}
+\end{equation*}
+となるためである.
+\example{中心場力系の角運動量}
+空間$\mathbb{R}^3$内を運動する質量$m$の質点を考える. 位置を$\bm{q}\coloneq(q_1,q_2,q_3)$, 運動量を$\bm{p}\coloneq(p_1,p_2,p_3)$とする. また, ポテンシャルエネルギー$V(|\bm{q}|)$（つまり原点からの距離にのみ依存するポテンシャル）を持っているとすると, Hamiltonianは,
+\begin{equation}
+    H(\bm{q},\bm{p})=\frac{1}{2m}|\bm{p}|^2+V(|\bm{q}|)
+\end{equation}
+である. このときの正準方程式は,
+\begin{equation}
+\left\{ \,
+    \begin{aligned}
+    &\frac{d\bm{q}}{dt} = \frac{\bm{p}}{m}\\
+    &\frac{d\bm{p}}{dt} = -\nabla V(|\bm{q}|)\\
+    \end{aligned}
+\right.
+\end{equation}
+である. この系において$\bm{q}\times \bm{p}$の各成分は第一積分である. なぜなら,
+\begin{equation*}
+    \begin{aligned}
+        \frac{d(\bm{q}\times \bm{p})}{dt}&=\frac{d\bm{q}}{dt}\times \bm{p}+\bm{q}\times \frac{d\bm{p}}{dt}\\
+        &=\frac{\bm{p}}{m}\times \bm{p}-\bm{q}\times \nabla V(|\bm{q}|)\\
+        &=-\bm{q}\times V'(|\bm{q}|)\nabla |\bm{q}|\\
+        &=-\bm{q}\times \frac{V'(|\bm{q}|)}{|\bm{q}|}\bm{q}=0
+    \end{aligned}
+\end{equation*}
+となるためである.
+$\bm{q}\times \bm{p}$を\textgt{角運動量}という.
+\example{二体問題における運動量}
+例\ref{ex:example3}で見た二体問題
+\begin{equation}
+    \left\{
+    \begin{aligned}
+        &m_1\frac{d^2\bm{r}_1}{dt^2}=-G\frac{m_1 m_2}{|\bm{r_1}-\bm{r_2}|^3}(r_1-r_2) \\
+        &m_2\frac{d^2\bm{r}_2}{dt^2}=-G\frac{m_1 m_2}{|\bm{r_1}-\bm{r_2}|^3}(r_2-r_1) \\
+    \end{aligned}
+    \right.
+\end{equation}
+を考える.上の式の辺々を足すことで,
+\begin{equation*}
+    \frac{d(\bm{p}_1+\bm{p}_2)}{dt}=0
+\end{equation*}
+となるので, 運動量$\bm{p}_1+\bm{p}_2$の各成分は第一積分である. また, 証明はしないがこの系においても角運動量$\bm{q}_1\times \bm{p}_1+\bm{q}_2\times \bm{p}_2$の各成分も第一積分である.
+\subsection{循環座標}
+自励的Hamiltonian $H(\bm{q},\bm{p})$を考える. もしこれが$\bm{q}$のとある成分$q_k$に依存していなければ, 正準方程式より
+\begin{equation*}
+    \frac{dp_k}{dt}=-\frac{\partial H}{\partial q_k}=0
+\end{equation*}
+であるため, $p_k$が第一積分である. この$q_k$のように, Hamiltonianが依存していない変数を\textgt{循環座標}という. 後で登場するので覚えておいてほしい.
+\section{第一積分と求積法}
+この章では例\ref{ex:example3}の二体問題が「解ける」方程式であることを示す.
+考える微分方程式は,
+\begin{subequations} \label{two-body}
+    \begin{align}
+        &m_1\frac{d^2\bm{r}_1}{dt^2}=-G\frac{m_1 m_2}{|\bm{r}_1-\bm{r}_2|^3}(\bm{r}_1-\bm{r}_2) \label{two-body:first}\\
+        &m_2\frac{d^2\bm{r}_2}{dt^2}=-G\frac{m_1 m_2}{|\bm{r}_1-\bm{r}_2|^3}(\bm{r}_2-\bm{r}_1) \label{two-body:second}
+    \end{align}
+\end{subequations}
+\subsection{変数変換}
+まずは次の変数変換を考える.
+\begin{subequations}
+\begin{align}
+    \bm{r}_G&\coloneq\frac{m_1\bm{r}_1+m_2\bm{r}_2}{m_1+m_2}\\
+    \bm{r}&\coloneq\bm{r}_2-\bm{r}_1.
+\end{align}
+\end{subequations}
+また見やすさのため$\mu\coloneq G(m_1+m_2)$とおくと上の方程式は次のようになる.
+\begin{subequations} \label{two-body:var}
+    \begin{align}
+        &\frac{d^2\bm{r}_G}{dt^2}=0\label{two-body:third}\\
+        &\frac{d^2\bm{r}}{dt^2}=-\frac{\mu}{|\bm{r}|^3}\bm{r}. \label{two-body:4th}
+    \end{align}
+\end{subequations}
+ここで,前章で見た運動量保存則を使うことで式\cref{two-body:third}が分かる. また, \cref{two-body}を解く代わりに, \cref{two-body:var}を解けばよい.
+\subsection{たくさんの第一積分}
+この系にはたくさんの第一積分が存在するためそれらをまず求める.
+\subsubsection{運動量}
+前章で見たように, 運動量
+\begin{equation} \label{two-body:momentum}
+    m_1\frac{d\bm{r}_1}{dt}+m_2\frac{d\bm{r}_2}{dt}
+\end{equation}
+の各成分は第一積分である.
+\subsubsection{エネルギー}
+式\ref{two-body:4th}の両辺について, $\frac{d\bm{r}}{dt}$との内積をとって少し整理すると,
+\begin{equation*}
+    \frac{d}{dt}\left(\frac{1}{2}|\bm{r}|^2-\frac{\mu}{|\bm{r}|}\right)=0.
+\end{equation*}
+よって, とある定数を$\epsilon$として,
+\begin{equation} \label{two-body:energy}
+    \frac{1}{2}|\bm{r}|^2-\frac{\mu}{|\bm{r}|}=\epsilon.
+\end{equation}
+これも第一積分の一つである.
+\subsubsection{角運動量}
+式\ref{two-body:4th}の両辺について, $\bm{r}$との外積をとると,
+\begin{equation*}
+    \bm{r}\times \frac{d^2\bm{r}}{dt^2}=0.
+\end{equation*}
+つまり,
+\begin{equation}
+    \bm{L}\coloneq \bm{r}\times\frac{d\bm{r}}{dt}
+\end{equation}
+の各成分は第一積分である.
+\subsubsection{Runge-Lenzベクトル}
+式\ref{two-body:4th}の両辺に$\bm{L}$との外積をとることで,
+\begin{equation*}
+    \frac{d}{dt}\left(\frac{d\bm{r}}{dt}\times\bm{L}-\frac{\mu}{|\bm{r}|}\bm{r}\right)=0.
+\end{equation*}
+よって以下の量の各成分は第一積分である.
+\begin{equation} \label{two-body:Runge-Lenz}
+    \bm{A}\coloneq \frac{d\bm{r}}{dt}\times\bm{L}-\frac{\mu}{|\bm{r}|}\bm{r}.
+\end{equation}
+$\bm{A}$のことを\textgt{Runge-Lenzベクトル}という.
+\subsection{二体問題は「解ける」}
+方程式\ref{two-body:third}と式\ref{two-body:4th}を解くことを考える.
+まず式\ref{two-body:third}についてだが, この解は
+\begin{equation}
+    \bm{r}_G=\bm{a}t+\bm{b}\quad(\text{ただし$\bm{a}$と$\bm{b}$は定ベクトル})
+\end{equation}
+となるので解ける.
+方程式\ref{two-body:4th}について考える. 前のセクションで求めた第一積分を使うことで, 未知関数の数を減らすことができる.$r\coloneq |\bm{r}|$とする. 式\ref{two-body:Runge-Lenz}の両辺について$\bm{r}$との内積をとることで,
+\begin{equation*}
+    \left(\frac{d\bm{r}}{dt}\times\bm{L}\right)\cdot\bm{r}-\frac{\mu}{r}\bm{r}\cdot\bm{r}=\bm{A}\cdot\bm{r}.
+\end{equation*}
+ここで,$(\frac{d\bm{r}}{dt}\times\bm{L})\cdot\bm{r}$はスカラー三重積であるため, $L\coloneq |\bm{L}|^2$とおいて,
+\begin{equation*}
+    \left(\frac{d\bm{r}}{dt}\times\bm{L}\right)\cdot\bm{r}=\left(\bm{r}\times\frac{d\bm{r}}{dt}\right)\cdot \bm{L}=L^2
+\end{equation*}
+となることから, $\bm{A}$と$\bm{r}$のなす角を$\nu$としたとき
+\begin{equation*}
+    L^2-\mu r=\bm{A}\cdot\bm{r}=Ar\cos{\nu}
+\end{equation*}
+を得る. この式を$r$に関して解くことで,
+\begin{equation*}
+    r=\frac{L^2/\mu}{1+\frac{A}{\mu}\cos{\nu}}
+\end{equation*}
+を得るが, さらに$p\coloneq \frac{L^2}{\mu}$,$e\coloneq \frac{A}{\mu}$とおくと
+\begin{equation}
+    r=\frac{p}{1+e\cos{\nu}} \label{two-body:orbit}
+\end{equation}
+となって, 「二体問題において一方の天体から見た他方の天体は, 二次曲線を描くように動く」ということが分かる.
+角運動量$\bm{L}$は一定であるため, $\bm{r}$はとある平面上を運動することになる. 特に$\bm{L}$の向きが$z$軸方向となるように座標軸を設定することで, $\bm{r}$は$xy$平面上を運動するとして良い. この座標系を用いると,
+\begin{equation*}
+    \bm{r}={}^t(r\cos{\nu},r\sin{\nu},0)
+\end{equation*}
+と表示できる. 式\ref{two-body:orbit}より, 未知関数$\nu$さえ分かれば$\bm{r}$が分かり, 方程式\ref{two-body:4th}が解けたことになる. よって$\nu$を求める. この方程式におけるエネルギー保存則\ref{two-body:energy}を用いる.
+\begin{equation*}
+    |\frac{d\bm{r}}{dt}|^2=|\frac{dr}{dt}^2|+r^2\left(\frac{d\nu}{dt}\right)^2=\left(\frac{p^2e^2\sin^2{\nu}}{(1+e\cos{\nu})^4}+\frac{p^2}{(1+e\cos{\nu})^2}\right)\left(\frac{d\nu}{dt}\right)^2
+\end{equation*}
+を用いて式(\ref{two-body:energy})を書き直す. 
+\begin{equation}
+    \begin{aligned}
+        F_1(\nu)&\coloneq \frac{1}{2}(\frac{p^2e^2\sin^2{\nu}}{(1+e\cos{\nu})^4}+\frac{p^2}{(1+e\cos{\nu})^2})\\
+        F_2(\nu)&\coloneq -\frac{\mu (1+e\cos{\nu})}{p}
+    \end{aligned}
+\end{equation}
+とすると,
+\begin{equation*}
+    F_1(\nu)\left(\frac{d\nu}{dt}\right)^2+F_2(\nu)=\epsilon.
+\end{equation*}
+つまり,
+\begin{equation}
+    \frac{d\nu}{dt}=\pm \sqrt{\frac{\epsilon-F_2(\nu)}{F_1(\nu)}}.\quad (\text{初期条件によって+か-かが決まる})
+\end{equation}
+となる. これは変数分離形の常微分方程式であるため, 解ける.
+\subsection{なぜ解けたのか}
+この節では上の解法を振り返ることで方程式\ref{two-body:4th}がなぜ解けたのかについて考える. 方程式\ref{two-body:4th}はそれ自体で中心力場系であり, 式\ref{two-body:energy}をHamiltonianとする自由度3のHamilton系である. 上で設定した$xyz$座標系を用いることにする. $\bm{q}=(x,y,z)$とし, 対応する運動量をそれぞれ$(p_x,p_y,p_z)$とする. 上の解法では, 第一積分を一つ見出すことで$x,y,z,p_x,p_y,p_z$の関係式が一つ定まり, 変数を一つ消去することができる. 例えば, 角運動量$\bm{L}=(L_1,L_2,L_3)$の各成分は第一積分である. 特に, $L_1=L_2=0$であるため, ここから$z=0,p_z=0$が導かれ, 二つの第一積分に対応して二つの変数を消去することができる. これらに加え, $L_3$やRunge-Lentzベクトル$\bm{A}=(A_1,A_2,A_3)$のうち$A_1,A_2$を使って軌道の方程式\ref{two-body:orbit}を得ている. これは, 相空間$\mathbb{R}^6$に5つの拘束条件($\bm{L}$と$A_1,A_2$が一定)を課すことで, $6-5=1$次元の部分多様体, つまり曲線を得ていると解釈できる.
+
+より一般に自由度が$n$の場合を考えると, 相空間の次元は$2n$である. このとき,$2n-1$個の第一積分が存在すれば正準方程式は「解ける」. 詳しく説明すると, $F_1,\cdots,F_{2n-1}$を第一積分とする. $F_i(z_1,...,z_{2n})=c_i(i=1,...,2n-1)$を$2n-1$本の連立方程式とみて, $z_2,...,z_{2n}$について解く.
+\begin{equation*}
+    z_j=f_j(z_1,c_1,...,c_{2n-1})(j=2,...,2n)
+\end{equation*}
+とすると, 正準方程式は結局,
+\begin{equation}
+    \frac{dz_1}{dt}=\frac{\partial H}{\partial z_{n+1}}(z_1,f_1(z_1,c_1,...,c_{2n-1}),...,f_{2n-1}(z_1,c_1,...,c_{2n-1}))
+\end{equation}
+となる. これは変数分離形の常微分方程式であるため「解ける」.
+ 
+ つまり, 方程式\ref{two-body:4th}が解けた理由としては, 「第一積分が$2n-1$個あったから」である.
+\section{可積分系とLiouville--Arnoldの定理}
+これまでに見た方程式は, すべて「可積分系」と呼ばれるものである. 「可積分系」という用語の定義には様々なものがあるが. ここで定義するものはLiouvilleの意味で可積分と呼ばれるものである. 以下の定義がなぜ「可積分」と呼ばれているのかについては次の節で説明する.
+\subsection{可積分系の定義}
+\begin{dfn}
+    $\mathcal{D}\subset\mathbb{R}^{2n}$を開集合とする. $H:\mathcal{D}\to\mathbb{R}$を自励的Hamiltonianとする自由度$n$のHamiliton系とする. $n$この第一積分$F_1,\cdots,F_n$が存在し, $\nabla F_1(\bm{z}),\cdots,\nabla F_n(\bm{z})$が$\mathcal{D}$の稠密な開集合上で一次独立で, \{$\cdot$,$\cdot$\}をPoisson括弧としたとき\{$F_i,F_j$\}$=0 (i,j=1,\cdots,n)$が成り立つとする.このとき, このHamiliton系は\textgt{可積分}または\textgt{完全積分可能}という.
+\end{dfn}
+\example{自由度1の自励的Hamilton系}
+自由度1の自励的Hamilton系を考えると, Hamiltonianが第一積分であることから可積分である.
+\example{中心力場系}
+自由度3のHamilton系を考える. Hamiltoninanは,
+\begin{equation*}
+    H(\bm{q},\bm{p})=\frac{1}{2}|\bm{p}|^2+V(|\bm{q}|)
+\end{equation*}
+であるとする. この系の互いに独立な3つの第一積分として, 角運動量$\bm{L}=\bm{q}\times\bm{p}$の各成分が挙げられるのでこの系は可積分である. また, 角運動量とは独立な第一積分があり, それはHamiltonian $H$, Runge-Lentzベクトル$\bm{A}=\bm{p}\times\bm{L}-\frac{\bm{q}}{|\bm{q}|}$である. このように, 自由度の数より多く独立な第一積分をもつとき,\textgt{超可積分系}であるという.
+\subsection{Liouville--Arnoldの定理}
+なぜLiouvilleの意味で可積分な系は「可積分」と呼ばれているのだろうか. これに対する解答は, 「解きたい方程式を明らかに解ける方程式に変換できるような正準変換を構成できるから」である. とある可積分系がLiuvilleの意味で可積分であるような$n$個の第一積分があるとすると, 解くのに必要な残り$n-1$個の第一積分を構成することができる. この$n-1$個の第一積分を求める議論は[3]にある.
+
+この他にも, $n$個の第一積分のレベルセットについて幾何学的に考えることで, すぐ後で述べる定理のように, 残り$n-1$個の第一積分を求めずとも求積することができる.
+\begin{thm}[ Liouville--Arnold ]
+    $H:\mathcal{D}\to\mathbb{R}$を自励的Hamiltonianとする自由度$n$のHamiliton系を考える. $n$この第一積分$F_1,\cdots,F_n$が存在し, $\lbrace F_i,F_j\rbrace =0 (i,j=1,\cdots,n)$が成り立つとする. また, ある$c_i\in\mathbb{R}(i=1,\cdots,n)$に対して$\bigcap_{i=1}^n F_i^{-1}(c_i)$が連結かつコンパクトであり, その上の各点で$\nabla F_1(\bm{z}),\cdots,\nabla F_n(\bm{z})$が一次独立であるとする. このとき,$\bigcap_{i=1}^n F_i^{-1}(c_i)$の近傍$\mathcal{N}$と開集合$\mathcal{U}\subset\mathbb{R}^n$, 正準変換
+    \begin{equation*}
+        \begin{aligned}
+            \Phi:\mathbb{T}^n\times\mathcal{U} &\to \mathcal{N} \\
+            (\bm{\theta},\bm{I}) &\mapsto \bm{z}
+        \end{aligned}
+    \end{equation*}
+    が存在し, $H\circ\Phi$が$\bm{I}$の関数となる. ここで, $\mathbb{T}^n = \mathbb{R}^n/(2\pi\mathbb{Z})$($n$次元トーラス)である. 特に, $\mathbb{T}\coloneq \mathbb{R}/(2\pi\mathbb{Z})$は円周を表わしている.
+\end{thm}
+上の定理における, $\bm{I}$のことを\textgt{作用変数}, $\bm{\theta}$のことを\textgt{角変数}という. この二つをまとめて\textgt{作用-角変数}という. また, 証明については[1]を参照して欲しい.
+
+$\Phi$は正準変換であるため, Hamilton系を作用-角変数を使って書きかえると, $H\circ\Phi$が$\bm{\theta}$によらないことに注意すると,
+\begin{equation*} \label{LIthm:solution}
+    \begin{aligned}
+        \frac{d\bm{\theta}}{dt}&=\frac{\partial (H\circ\Phi)}{\partial\bm{I}} \\
+        \frac{d\bm{I}}{dt}&=-\frac{\partial (H\circ\Phi)}{\partial\bm{\theta}}=0
+    \end{aligned}
+\end{equation*}
+となる. よって, $\bm{I}=\bm{I}_0(\bm{I}_0\text{は定ベクトル})$と書け, $\bm{\theta}$については$\bm{\omega}\coloneq \frac{\partial (H\circ\Phi)}{\partial\bm{I}}(\bm{I}_0)$として
+\begin{equation*}
+    \bm{\theta}(t)=\bm{\omega}t+\bm{\theta}_0
+\end{equation*}
+と書ける. このトーラス上の軌道を\textgt{Kronecker軌道}という. Kronecker軌道は$t$の1次式の形をしているが, トーラス上の軌道であるため$2\pi$の整数倍を同一視しなければならない. $\bm{\omega}$の成分の比が有理数からなるときは周期軌道になる. そうでないときは準周期軌道といい,トーラス上の稠密な部分集合になる.
+
+以上をまとめると, Liouvilleの意味での可積分な系の流れは, トーラス$\mathbb{T}^n\times\{\bm{I}_0\}$上のKronecker軌道と見ることができる.
+\subsection{作用-角変数}
+では作用-角変数とはどういうものなのだろうか. 証明は省くが, 以下のようにして構成できる.([3]に従った. また, これが作用-角変数である証明については[2]を参照して欲しい.)
+
+可積分系には$n$個の第一積分$F_1,\cdots,F_n$が存在する. $c_i(i=1,\cdots,n)$を定数とし,$F_i(\bm{q},\bm{p})=c_i$とする. $n$本の連立方程式
+\begin{equation*}
+    F_i(\bm{q},\bm{p})=c_i(i=1,\cdots,n)
+\end{equation*}
+を$\bm{p}$の各成分ついて解いて,
+\begin{equation}
+    p_i=p_i(\bm{q},c_1,...,c_n)
+\end{equation}
+となる.
+
+ここで, Liouville--Arnoldの定理より, $\bigcap_{i=1}^n F_i^{-1}(c_i)$は$n$次元トーラス$\mathbb{T}^n$に微分同相である. $\psi:\mathbb{T}^n\to\bigcap_{i=1}^n F_i^{-1}(c_i)$をその微分同相写像とする. また$\phi_1,...,\phi_n\in\mathbb{T}$とし, $\gamma'_i$を, $\mathbb{T}^n$上の曲線$\{\phi_1\}\times\cdots\{\phi_{i-1}\}\times\mathbb{T}\times\{\phi_{i+1}\}\times\cdots\{\phi_n\}$とする. このとき,$\gamma_i\coloneq \psi(\gamma'_i)$とする.
+\begin{equation}
+    I_i\coloneq \frac{1}{2\pi}\oint_{\gamma_i}\sum_{k=0}^{n}{p_k(\bm{q},c_1,...,c_n)\, dq_k}
+\end{equation}
+とする. なお, 上の積分の値は$\gamma_i$を定義した際に用いた$\phi_1,...,\phi_n\in\mathbb{T}$には依存しない.
+
+ここで, 次の関数$S$を考える.
+\begin{equation}
+    S(\bm{q},\bm{I})\coloneq \int_{\bm{q}_0}^{\bm{q}} \sum_{k=0}^{n}{p_k(\bm{q},\bm{I})\, dq_k}.
+\end{equation}
+ただし, $\bm{q}_0$は相空間の中で任意に選んだ点であり. 積分は$\bm{q}_0$から$\bm{q}$に向かう曲線に沿った線積分である. 積分の値は, 始点と終点が定まれば一意に定まるものではなく,$2\pi I_i(i=1,...,n)$の整数倍だけ不定性があることが示せる.
+この関数$S$に対して,
+\begin{equation} \label{gen-func}
+    \left\{
+    \begin{aligned}
+        \bm{p}&=\frac{\partial S}{\partial \bm{q}}(\bm{q},\bm{I})\\
+        \bm{\theta}&=\frac{\partial S}{\partial \bm{I}}(\bm{q},\bm{I})
+    \end{aligned}
+    \right.
+\end{equation}
+を満たすような$\bm{p}$,$\bm{\theta}$を考える. すると, 式\ref{gen-func}を$\bm{q}$,$\bm{p}$について解いたもの
+\begin{equation}
+    \left\{
+    \begin{aligned}
+        \bm{q}&=\bm{q}(\bm{\theta},\bm{I})\\
+        \bm{p}&=\bm{p}(\bm{\theta},\bm{I})
+    \end{aligned}
+    \right.
+\end{equation}
+は正準変換になっており, $\bm{I}$,$\bm{\theta}$が作用-角変数であることを示すことができる. 詳しくは[1]の§50「Action-Angle Variables」を参照してほしい. 以下で具体例を見る.
+\example{1次元調和振動子}
+以下の自由度1のHamiltonianを考える.
+\begin{equation*}
+    H(q,p)=\frac{1}{2}p^2+\frac{1}{2}\omega^2q^2.
+\end{equation*}
+これは, フックの法則に従うばねの復元力を受けて運動する質点を表わしている. 自由度が1であるためこの系は可積分系である. $H$は第一積分であるため, とある定数を$E$として,
+\begin{equation} \label{level-set}
+    \frac{1}{2}p^2+\frac{1}{2}\omega^2q^2=E
+\end{equation}
+と書ける. これは相空間上で楕円を表わす. これがこれまでで言うところの$\bigcap_{i=1}^n F_i^{-1}(c_i)$であるが, 楕円は円周と微分同相であることからもこれが$\mathbb{T}$と微分同相であることが確認できる. このとき, $\gamma_1$は楕円\ref{level-set}である. よって, 作用変数を$I$としたとき,
+\begin{equation*}
+    I=\frac{1}{2\pi}\oint_{\gamma_1} pdq
+\end{equation*}
+である. これは相空間上の線積分である. この値は, 楕円\ref{level-set}の面積(の$\frac{1}{2\pi}$倍)であるため,
+\begin{equation*}
+    I=\frac{1}{2\pi}\pi\sqrt{2E}\frac{\sqrt{2E}}{\omega}=\frac{E}{\omega}
+\end{equation*}
+である.
+
+次に関数$S$を式\ref{gen-func}に従って計算する. 式\ref{level-set}を$p$について解くと, $E=\omega I$を考慮すると
+\begin{equation*}
+    p=\pm\sqrt{2\omega I-\omega^2q^2}
+\end{equation*}
+となるが今回は$+$の方を取って,
+\begin{equation}
+    S(q,I)=\int_{q_0}^{q} \sqrt{2\omega I-\omega^2q^2}dq
+\end{equation}
+となり, したがって角度変数$\theta$は
+\begin{equation}
+    \bm{\theta}=\frac{\partial S}{\partial I}=\int_{q_0}^{q} \frac{\omega}{\sqrt{2\omega I-\omega^2q^2}}dq
+\end{equation}
+となる. これらの積分は計算することができ, 作用-角変数への正準変換
+\begin{equation}
+    \begin{aligned}
+        q&=\sqrt{\frac{2I}{\omega}}\cos{\theta}\\
+        p&=\sqrt{2\omega I}\sin{\theta}
+    \end{aligned}
+\end{equation}
+が求まった.
+\section{おわりに}
+以上で私の記事の本編は終わりである. 最後に, 本当は書きたかったが書かなかったトピックについて述べたい.
+
+それは可積分系ではない系についてである. 当初の私は「三体問題は解けない」という文言について調べていた. この世に原理的に「解けない」ことが示されている方程式があることは非常に驚きである. ここで三体問題とは, 三つの天体が互いの万有引力で引き合っているときの運動方程式を解くという問題である. つまり,
+\begin{equation} \label{three-body}
+    \begin{aligned}
+        \frac{d^2\bm{q}_1}{dt^2}&=-G\frac{m_2}{|\bm{q}_1-\bm{q}_2|^3}(\bm{q}_1-\bm{q}_2)-G\frac{m_3}{|\bm{q}_1-\bm{q}_3|^3}(\bm{q}_1-\bm{q}_3)\\
+        \frac{d^2\bm{q}_2}{dt^2}&=-G\frac{m_1}{|\bm{q}_2-\bm{q}_1|^3}(\bm{q}_2-\bm{q}_1)-G\frac{m_3}{|\bm{q}_2-\bm{q}_3|^3}(\bm{q}_2-\bm{q}_3)\\
+        \frac{d^2\bm{q}_3}{dt^2}&=-G\frac{m_1}{|\bm{q}_3-\bm{q}_1|^3}(\bm{q}_3-\bm{q}_1)-G\frac{m_2}{|\bm{q}_3-\bm{q}_2|^3}(\bm{q}_3-\bm{q}_2)\\
+    \end{aligned}
+\end{equation}
+ここで, $m_1,m_2,m_3$はそれぞれの天体の質量を表わしている. ここではさらに天体の質量についての仮定を置くことにし, $m_3$は$m_1,m_2$に比べて非常に小さいとする. 方程式\ref{three-body}において$m_3$が及ぼす万有引力を無視すると,
+\begin{equation} \label{restricted-three-body}
+    \begin{aligned}
+        \frac{d^2\bm{q}_1}{dt^2}&=-G\frac{m_2}{|\bm{q}_1-\bm{q}_2|^3}(\bm{q}_1-\bm{q}_2)\\
+        \frac{d^2\bm{q}_2}{dt^2}&=-G\frac{m_1}{|\bm{q}_2-\bm{q}_1|^3}(\bm{q}_2-\bm{q}_1)\\
+        \frac{d^2\bm{q}_3}{dt^2}&=-G\frac{m_1}{|\bm{q}_3-\bm{q}_1|^3}(\bm{q}_3-\bm{q}_1)-G\frac{m_2}{|\bm{q}_3-\bm{q}_2|^3}(\bm{q}_3-\bm{q}_2)\\
+    \end{aligned}
+\end{equation}
+を得る. これは制限三体問題と呼ばれている. 現実では例えば, 人工衛星が地球と月の重力を受けながら運動する問題が制限三体問題である.
+
+さらに三つの天体は$xy$平面上を運動しており, $\bm{q}_1$と$\bm{q}_2$が既知で, 重心が原点であり, $xy$平面上等速円運動している場合を考える. この問題は, 平面円制限三体問題と呼ばれている. これは自由度2のHamilton系である. また,スケー ルを変換することによって$\mu\coloneq \frac{m_3}{m_1+m_2}$をパラメータとすることができる.自 由度が2であるため,求 積するためにはHamiltonianとは独立なもう一つの第一積分を見つけなければならない. しかしPoincar\'eの定理によれば$\mu$に関して解析的な第一積分はHamiltonianの関数であることが証明できてしまう.
+
+これが,「三体問題は解けない」と言われるゆえんである.
+
+今回の工大祭で私は二つの活動をする. 一つはこの記事であり, 「解ける」微分方程式について紹介した. この他にも私は対面で講演をするのだが, その際は上のような「解けない」方程式について話したい.
+
+
+\section{参考文献}
+[1]V. I. Arnold, Mathematical Methods of Classical Mechanics, 2nd ed, Springer-Verlag New York(1997)
+
+[2]柴山允瑠, 重点解説 ハミルトン力学系 可積分系とKAM理論を中心に,サイエンス社(2016)
+
+[3]大貫義郎 吉田春夫,「力学」, 岩波書店(2001)
+
+
+\end{document}
