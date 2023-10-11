@@ -1,4 +1,4 @@
-\documentclass{ltjsarticle}
+\documentclass[dvipdfmx]{jsarticle}
 \title{Galois理論による代数学の基本定理の証明}
 \author{MathTech部員　田中大地}
 \date{}
@@ -8,6 +8,7 @@
 \usepackage{amsthm}
 \usepackage{bm}
 \usepackage{mathtools}
+\usepackage{tikz-cd}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{prop}[definition]{Proposition}
@@ -17,6 +18,9 @@
 \newtheorem{remark}[definition]{Remark}
 \newtheorem{example}[definition]{Example}
 \setlength{\parindent}{0pt}%インデント
+\DeclareMathOperator{\Stab}{Stab}
+\DeclareMathOperator{\Orb}{Orb}
+\DeclareMathOperator{\Ker}{Ker}
 \renewcommand{\qedsymbol}{$\blacksquare$}
 \begin{document}
 \maketitle
@@ -29,7 +33,7 @@ Galois理論は方程式の可解性や作図問題の応用がありますが�
 内容かと思いますが、大学の代数学の感じが伝わればいいなと思います。
 まず、主張を正確に書きます。
 \begin{theorem}\label{algethm}(代数学の基本定理)
- $ a_0,a_1,\cdots ,a_n \in \mathbb{C},a_n\ne 0$とする。\\
+ $ a_0,a_1,\ldots ,a_n \in \mathbb{C},a_n\ne 0$とする。\\
  このとき多項式$f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots +a_0 $は$\mathbb{C}$内に根を持つ。
 \end{theorem}
 証明は、代数学の基本定理が成り立たないと仮定すると複素数体$\mathbb{C}$の
@@ -45,65 +49,68 @@ Galois理論は方程式の可解性や作図問題の応用がありますが�
   がつぎの(1)、(2)を満たすとき、この写像を作用といい、
   $G\curvearrowright X$と書く。
   \begin{enumerate}
-    \item[(1)] $\forall x\in X,ex=x$
+    \item[(1)] $e\in G$を単位元とすると、$\forall x\in X,ex=x$
     \item[(2)] $\forall g,h\in G,\forall x\in x,g(hx)=(gh)x$
   \end{enumerate}
  また、$G\curvearrowright X$の時、
  $x\in X$に対して、\\
- $\mathrm{Stab}(x)=\{g\in G\mid gx=g\}$を$x$の安定化群、
- $\mathrm{Orb}(x)=\{gx\mid g\in G\}$を$x$の軌道という。
+ $\Stab(x)=\{g\in G\mid gx=g\}$を$x$の安定化群、
+ $\Orb(x)=\{gx\mid g\in G\}$を$x$の軌道という。
 \end{definition}
 \newpage
 次が成り立つ。
 \begin{prop}(軌道分解)\qquad
-  $G\curvearrowright X$のとき、$X=\bigsqcup  _{\mathrm{Orb}(x)}\mathrm{Orb}(x)$  
+  $G\curvearrowright X$のとき、$X=\bigsqcup  _{\Orb(x)}\Orb(x)$  
 \end{prop}
 \begin{proof}
-  $x\in\mathrm{Ord}(x)(\forall x\in X)$また$\forall x,y\in X$に対して
-  $\mathrm{Ord}(x)=\mathrm{Ord}(y)
-  \mathrm{または}\mathrm{Ord}(x)\cap\mathrm{Ord}(y)=\phi \forall$
+  任意の$x\in X$に対して$x\in\Orb(x)$であり、また$\forall x,y\in X$に対して
+  $\Orb(x)=\Orb(y)
+  $または$\Orb(x)\cap\Orb(y)=\emptyset$
   なることが定義からわかるので、従う。
 \end{proof}
 \begin{prop}
   $G\curvearrowright X$とする。\\
-  $x\in X$に対して、$\mathrm{Stab}(x)$は$G$の正規部分群であり、
-  $\left|G/\mathrm{Stab}(x)\right|=\left|\mathrm{Orb}(x)\right|$となる。
+  $x\in X$に対して、$\Stab(x)$は$G$の部分群であり、
+  $\left|G/\Stab(x)\right|=\left|\Orb(x)\right|$となる。
 \end{prop}
 \begin{proof}
-  \[\begin{array}{ccc}
-    G/\mathrm{Stab}(x) &\longrightarrow &\mathrm{Orb}(x)\\
-    \rotatebox{90}{\in}&                &\rotatebox{90}{\in}\\
-    \overline{g}       &\longmapsto     &gx\\
-  \end{array}\]
+\begin{center}
+    \begin{tikzcd}
+      G/\Stab(x) \arrow[r] 
+      & \Orb(x)  \\
+      \bar{g} \arrow[r,mapsto] \arrow[u,phantom,"\in",sloped]
+      & gx \arrow[u,phantom,"\in",sloped]
+      \end{tikzcd}    
+\end{center}
   によって一対一に対応する。
 \end{proof}
 \begin{definition}$G$を群とする。\\
     (1) $Z_G=\{h\in G\mid \forall g\in G,gh=hg\}$を$G$の中心という。\\
-    (2) $p$素数とするとき、位数が$p$べきである群を$p$群という。
+    (2) $p$を素数とするとき、位数が$p$べきである群を$p$群という。
 \end{definition}
 $G$:有限群、$X=G$として、
 \[ G\times X\ni (g,h)\longmapsto ghg^{-1}\in X\]
 を考えると作用になる。この作用について軌道分解の代表元$\{h_i\}$をとると、
 \begin{align*}
-             G=&\bigsqcup _{i}\left|\mathrm{Orb}(h_i)\right|\\
-              =&\left(\bigsqcup _{i,h_i\in Z_G}\mathrm{Orb}(h_i)\right)\bigsqcup
-              \left(\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h_i)\right)\\
+             G=&\bigsqcup _{i}\left|\Orb(h_i)\right|\\
+              =&\left(\bigsqcup _{i,h_i\in Z_G}\Orb(h_i)\right)\bigsqcup
+              \left(\bigsqcup _{i,h_i\notin Z_G}\Orb(h_i)\right)\\
               =&\left(\bigsqcup _{i,h_i\in Z_G}\{h_i\}\right)\bigsqcup 
-              \left(\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h_i)\right)
+              \left(\bigsqcup _{i,h_i\notin Z_G}\Orb(h_i)\right)
 \end{align*}
 ここで、任意の$h\in Z_{G}$は
-$\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h)$
+$\bigsqcup _{i,h_i\notin Z_G}\Orb(h)$
 に含まれないから、$h\in\bigsqcup _{i,h_i\in Z_G}\{h_i\}$
 従って$Z_{G}=\bigsqcup _{i,h_i\in Z_G}\{h_i\}$
 となるから、
 \begin{equation}\label{kyouyaku}
     |G|=|Z_{G}|
-              +\sum_{i,h_i\notin Z_G}\left|\mathrm{Orb}(h_i)\right|
+              +\sum_{i,h_i\notin Z_G}\left|\Orb(h_i)\right|
 \end{equation}
 $|G|=p^n$のとき、$h\notin Z_G$なら
-$\left|\mathrm{Orb}(h)\right|
-=\frac{|G|}{|\mathrm{Stab}(h)|}=\frac{p^n}{|\mathrm{Stab}(h)|},\>
-\left|\mathrm{Stab}(h)\right|< |G|=p^n$となるから、$|\mathrm{Orb}(h)|$は$p$の倍数、
+$\left|\Orb(h)\right|
+=\frac{|G|}{|\Stab(h)|}=\frac{p^n}{|\Stab(h)|},\>
+\left|\Stab(h)\right|< |G|=p^n$となるから、$|\Orb(h)|$は$p$の倍数、
 よって、(\ref{kyouyaku})より$|Z_G|$は$p$の倍数である。
 また、$Z_G\supseteq \{e\}$だから、次が言えた。
 \begin{theorem}
@@ -114,10 +121,10 @@ $\left|\mathrm{Orb}(h)\right|
   位数$p^t$の部分群を持つ。
 \end{theorem}
 \begin{proof}
- $n$の帰納法で示す。$n=1$は明らか$n-1$まで成り立つとして$n$のときを示す。
+ $n$の帰納法で示す。$n=1$は明らか。$n-1$まで成り立つとして$n$のときを示す。
   $Z_G\varsupsetneq \{e\}$の位数pの元$x$をとり、$\mathrm{N}=\langle x\rangle$とする。
   $N$は$G$の正規部分群であり、$G/N$は位数$p^{n-1}$の群であるから帰納法の仮定から
-  $0\leqq\forall t\leqq n-1$に対して位数$p^t$の部分群がある。言い換えれば
+  $0\leqq\forall t\leqq n-1$に対して指数$p^t$の部分群がある。言い換えれば、$G$には
   $0\leqq\forall t\leqq n-1$に対して指数$p^t$の部分群がある。ここで、
   部分群の対応
   \[\{G\mathrm{の}N\mathrm{を含む部分群}\}
@@ -142,12 +149,15 @@ $p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味する�
   $|H|=p^n$なるものがある。 
 \end{theorem}
 \begin{proof}
-  $X=\{S\subset G\mid |S|=p^n(\mathrm{但し}S\mathrm{は部分群とは限らない})\}$とする。\\
-  \[\begin{array}{ccc}
-    G\times X               &\longrightarrow &X\\
-    \rotatebox{90}{$\in$} &                &\rotatebox{90}{$\in$}\\
-    (g,S)                   &\longmapsto      &gS=\{gs|s\in S\}\\
-  \end{array}\]
+  $X=\{S\subset G\mid |S|=p^n(\mathrm{但し}S\mathrm{は部分群とは限らない})\}$とする。
+\begin{center}
+    \begin{tikzcd}
+      G\times X \arrow[r] 
+      & X  \\
+      (g,s) \arrow[r,mapsto] \arrow[u,phantom,"\in",sloped]
+      & gS=\{gs|s\in S\} \arrow[u,phantom,"\in",sloped]
+      \end{tikzcd}  
+\end{center}  
   は作用となる。
   \begin{align*}
                    |X|=&\left(
@@ -167,15 +177,15 @@ $p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味する�
                   \equiv m\qquad \mod p
   \end{align*}
   軌道分解を考えると、\\
-  \[|X|=\sum_{\mathrm{Orb}(S)}\left|\mathrm{Orb}(S)\right|\equiv m\not\equiv 0\qquad \mod p\]
-  だから、$\left|\mathrm{Orb}(S)\right|\not\equiv 0$となる$S$がある。$H=\mathrm{Stab}(S)$
+  \[|X|=\sum_{\Orb(S)}\left|\Orb(S)\right|\equiv m\not\equiv 0\qquad \mod p\]
+  だから、$\left|\Orb(S)\right|\not\equiv 0$となる$S$がある。$H=\Stab(S)$
   とおく。
   \[S=\bigcup _{y\in H}Hy=\bigsqcup _{Hy}Hy\]
-  よって$|Hg|=|H|$より$|S|=p^n$は$|H|$で割り切れるので。
+  よって$|Hg|=|H|$より$|S|=p^n$は$|H|$で割り切れるので、
   $|H|=p^k(0\leqq k\leqq n)$と書ける。また、
   \[\frac{|G|}{|H|}=p^{n-k}m
-  =\left|\mathrm{Orb}(S)\right|\not\equiv0\qquad \mod p\]
-  から、$k=n\therefore |H|=p^n$となり、$H$が求める部分群。
+  =\left|\Orb(S)\right|\not\equiv0\qquad \mod p\]
+  から、$k=n$である。よって$|H|=p^n$となり、$H$が求める部分群。
 \end{proof}
 \newpage
 \section{Galois理論}
@@ -190,20 +200,20 @@ $p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味する�
 \end{definition}
 \begin{theorem}
   $K/F$を有限次Galois拡大とする。このとき、$[K:F]=\left|\mathrm{Gal}(K/F)\right|$
-  ただし$[K:F]$はK/Fの拡大次数。
+  ただし$[K:F]$は$K/F$の拡大次数。
 \end{theorem}
 \begin{proof}
   $K/F$は分離拡大だから、$\overline{K}$を$K$の代数閉包とするとき、
   $\left|\mathrm{Hom}_F(K,\overline{K})\right|=[K:F]$である。
   $K/F$は正規拡大でもあるから、$\forall \sigma\in \mathrm{Hom}_F(K,\overline{K})$について
-  $\sigma (K)\subset K$である。$\mathrm{Ker} \sigma =0,[K:F]<\infty$
+  $\sigma (K)\subset K$である。$\Ker \sigma =0,[K:F]<\infty$
   なので次元定理から$\sigma(K)=K$となる。
   よって$\mathrm{Hom}_F(K,\overline{K})=\mathrm{Gal}(K/F)$なので、従う。
 \end{proof}
 \begin{theorem}\label{artin}(Artin)
   $K$を体とし、$G$を$\mathrm{Aut}(K)$の有限部分群とする。このとき\\
   $F=K^G=\{x\in K|\sigma (x)=x(\forall\sigma\in G)\}$
-  とすれば、$K/F$は有限次Galois拡大で$Gal(K/F)=G$となる。
+  とすれば、$K/F$は有限次Galois拡大で$\mathrm{Gal}(K/F)=G$となる。
 \end{theorem}
 \begin{proof}
   $\alpha\in K$に対し
@@ -213,12 +223,14 @@ $p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味する�
   (X-\sigma _n(\alpha))\in K[X]\]
   とする。
   $\forall\sigma\in G$に対して
-  \[\begin{array}{ccc}
-                      G/H_\alpha &\longrightarrow &G/H_\alpha\\
-    \rotatebox{90}{\in}          &                &\rotatebox{90}{\in} \\
-    \sigma _i H_\alpha   &\longmapsto     &\sigma\sigma_i H_\alpha\\   
-    \end{array}
-    \]
+\begin{center}
+    \begin{tikzcd}
+      G/H_{\alpha} \arrow[r] 
+      & G/H_{\alpha}  \\
+      \sigma_{i}H_{\alpha} \arrow[r,mapsto] \arrow[u,phantom,"\in",sloped]
+      & \sigma\sigma_{i}H_{\alpha} \arrow[u,phantom,"\in",sloped]
+      \end{tikzcd}  
+\end{center}
     は全単射であるので、
   \begin{align*}
     \sigma(f_\alpha(X))=&(X-\sigma\sigma _1(\alpha))(X-\sigma\sigma _2(\alpha))\cdots
@@ -230,7 +242,7 @@ $p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味する�
   $\sigma _i(\alpha)=\sigma _j(\alpha)\Longleftrightarrow 
   \sigma _i H_\alpha =\sigma _i H_\alpha$
   だから、$f_\alpha(X)$は分離多項式。よって$K/F$はGalois拡大。
-  $K/F$が無限次拡大なら、$\beta _1,\beta _2,\cdots$を
+  $K/F$が無限次拡大なら、$\beta _1,\beta _2,\ldots$を
   \[F\subsetneq F(\beta _1)\subsetneq  F(\beta _1,\beta _2)\subsetneq\cdots\]
   となるように取れるので、中間体
   $M(F\subset M\subset K)$で、
@@ -290,8 +302,8 @@ $M\in\mathbb{M}$とする。$M_{H(M)}=\{x\in K\mid \forall \sigma\in H(M),\sigma
 であり、$\mathrm{Gal}(K/M_{H(M)})=H(M)$となる。一方Prop\ref{tyuukanngal}
 から$K/M$も有限次Galois拡大で$\mathrm{Gal}(K/M)=H(M)$なので、
 \[[M_{H(M)}:M]=\frac{[K:M]}{[K:M_{H(M)}]}=\frac{|H(M)|}{|H(M)|}=1\]
-よって$M=M_{H(M)}$\\
-$H\in\mathbb{H}$とする.$H(M_H)=\{\sigma\in \mathrm{Gal}(K/F)|\forall x\in M_H,\sigma(x)=x\}$
+よって$M=M_{H(M)}$。\\
+$H\in\mathbb{H}$とする。$H(M_H)=\{\sigma\in \mathrm{Gal}(K/F)|\forall x\in M_H,\sigma(x)=x\}$
 であるので、$H\subset H(M_H)$となる。Thm\ref{artin}から
 $K/M_H$は有限次Galois拡大であり、$\mathrm{Gal}(K/M_H)=H$となる。一方Prop\ref{tyuukanngal}
 より$\mathrm{Gal}(K/M_H)=H(M_H)$なので、$H=H(M_H)$となる。\\
@@ -308,7 +320,7 @@ $H(M_1\cap M_2)=\langle H_1,H_2\rangle$\\
 (3)
 $M$を中間体とする。$M\longleftrightarrow H$とする。
 \begin{align*}
-  M/F\mathrm{が有限次Galois拡大}&\xLeftrightarrow{(a)} M/F\mathrm{が正規拡大}\\
+  M/F\text{が有限次Galois拡大}&\xLeftrightarrow{(a)} M/F\text{が正規拡大}\\
                                &\xLeftrightarrow{(b)} \forall\sigma\in\mathrm{Gal}(K/F),\sigma (M)\subset M\\
                                &\xLeftrightarrow{(c)} H\vartriangleleft \mathrm{Gal}(K/F)
 \end{align*}
@@ -334,19 +346,11 @@ $\sigma ^{-1}\tau\sigma(x)=x$つまり$\tau\sigma(x)=\sigma(x)$
 $\sigma(M)\subset M$\\
 最後に$\mathrm{Gal}(M/F)\cong \mathrm{Gal}(K/F)/H$について\\
 \[
-  \begin{array}{ccc}
-  \mathrm{Gal}(K/F)   &\longrightarrow &\mathrm{Gal}(M/F)\\
-  \rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
-  \sigma              &\longmapsto     &\sigma |_M         
-  \end{array}
+\mathrm{Gal}(K/F)\ni \sigma\mapsto \sigma|_{M}\in \mathrm{Gal}(M/F)
 \]
 に準同型定理を使うと、単射準同型
 \[
-  \begin{array}{ccc}
-  \mathrm{Gal}(K/F)/H &\longrightarrow &\mathrm{Gal}(M/F)\\
-  \rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
-  \sigma  H           &\longmapsto     &\sigma |_M         
-  \end{array}
+\mathrm{Gal}(K/F)/H\ni \sigma H\mapsto \sigma|_{M}\in \mathrm{Gal}(M/F)
 \]を得る。
 ここで、Prop\ref{tyuukanngal}より、$H=\mathrm{Gal}(K/M)$なので
 \begin{align*}
@@ -377,17 +381,19 @@ $\sigma(M)\subset M$\\
   $\sigma\in G$も存在する。ここで
   \[\alpha _1=\sqrt[4]{2},\alpha _2=-\sqrt[4]{2},
   \alpha _3=i\sqrt[4]{2},\alpha_4=-i\sqrt[4]{2}\]
-  とおく。すると次の単射準同型が考えられる。
-  \[\begin{array}{cccc}
-    \phi:&G                   &\longrightarrow &S_4\\
-         &\rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
-         &\sigma              &\longmapsto     &
-    \left(\begin{array}{cccc}
-    1&2&3&4\\
-    t_1&t_2&t_3&t_4
-    \end{array}\right)
-  \end{array}
-    \]
+  とおく。すると次の対応を定める単射準同型$\phi$が考えられる。
+  \begin{center}
+     \begin{tikzcd}    
+    G \arrow[r] 
+    & S_{4}  \\
+    \sigma \arrow[r,mapsto] \arrow[u,phantom,"\in",sloped]
+    & \begin{pmatrix}
+        1&2&3&4\\
+        t_1&t_2&t_3&t_4
+        \end{pmatrix} \arrow[u,phantom,"\in",sloped]
+    \end{tikzcd}   
+  \end{center}
+ 
 ただし$\sigma(\alpha_i)=\alpha_{t_i}(i=1,2,3,4)$である。\\
 $\sigma_1,\sigma_2\in G$を$\sigma_1(\alpha_1)=\alpha_3,\sigma_1(i)=i,
 \sigma_2(\alpha_1)=\alpha_1,\sigma_2(i)=-i$となるようにとるとき、
@@ -400,21 +406,21 @@ $\phi(\sigma_2)=\begin{pmatrix}3&4\end{pmatrix}$
 \right\rangle $となる。
 \end{example}
 \begin{example}\label{xe2}(Artin-Schreier拡大)\\
- $\mathrm{ch}F=p$なる体$F$と$F$上多項式$f(X)=X^p -X-a$を考える。
+ $\mathrm{ch}F=p>0$なる体$F$と$F$上多項式$f(X)=X^p -X-a$を考える。
  ここで$a\notin\{x^p-x\mid x\in F\}$ とする。$f(X)$の根の一つ$\alpha$
  を添加した体を$E=F(\alpha)$としたとき$E/F$が$p$次Galois拡大となることを示そう。\\
  まず、$\alpha$の最小多項式を$g(X)$とするとき、$g(X)=g(X+1)$となることを背理法で
- 示す。$g(X)\ne g(X+1)$を仮定すると、$g(X),g(X+1),\cdots ,g(X+p-1)$は相異なる。
+ 示す。$g(X)\ne g(X+1)$を仮定すると、$g(X),g(X+1),\ldots ,g(X+p-1)$は相異なる。
  実際、$g(X+i)=g(X+j)\quad (0\leqq i<j\leqq p-1)$となるなら、$g(X)=g(X+j-i)$
  である。ここで、$(j-i)k+pl=1$となる$k,l$をとると、
  \[g(X)=g(X+k(j-i))=g(X+1-pl)=g(X+1)\]
   となるので矛盾が起きる。
-  また、$g(X),g(X+1),\cdots ,g(X+p-1)$は、それぞれ$f(X)$の根である$\alpha,\alpha +1,\cdots ,\alpha +p-1$
+  また、$g(X),g(X+1),\ldots ,g(X+p-1)$は、それぞれ$f(X)$の根である$\alpha,\alpha +1,\ldots ,\alpha +p-1$
   の最小多項式であるので、$f(X)=\prod _{i=0}^{p-1}g(X+i)$となることから、
   $p=\deg f(X)=\sum _{i=0}^{p-1}\deg g(X+i)=p\deg g(X)$である。
   これは、$\alpha\in F$を意味するが、$a\notin\{x^p-x\mid x\in F\}$に反するので
   $g(X)=g(X+1)$が示された。\\
-  $g(X)$は相異なる$p$個の根$\alpha ,\alpha+1,\cdots ,\alpha +p-1$をもつので
+  $g(X)$は相異なる$p$個の根$\alpha ,\alpha+1,\ldots ,\alpha +p-1$をもつので
   $g(X)=f(X)\prod _{i=0}^{p-1}(X-i)$である。以上から、
   $E/F$は$p$次Galois拡大である。したがって、
   $\mathrm{Gal}(E/F)\cong \mathbb{Z}/p\mathbb{Z}$である。

@@ -124,7 +124,7 @@ $$(N(\varepsilon),N(\varepsilon'))=(1,1)$$
 となることがわかる．いま，$\varepsilon=a+bi(a,b\in\mathbb{Z})$とおくと，
 $$a^2+b^2=1$$
 となる．$a,b\in\mathbb{Z}$より，
-$$(a,b)=(\pm1,0),(0,\pm1)\quad(複号任意)$$
+$$(a,b)=(\pm1,0),(0,\pm1)$$
 であるから，$\varepsilon=\pm1,\pm i$となる．
 \end{proof}
 
@@ -215,7 +215,7 @@ $\alpha,\beta\in\mathbb{Z}[i]$とする．単元$\varepsilon$を用いて$\alpha
 \begin{theorem}{（ガウス整数の素因数分解の一意性）}
 任意の$0$でない$\alpha\in\mathbb{Z}[i]$は，
 $$\alpha=\varepsilon\pi_1^{e_1}\cdots\pi_r^{e_r}$$
-の形に分解できる．ただし，$\varepsilon$は単元，$\pi_i\in\mathbb{Z}[i]$はどの二つも互いに同伴でない素元，$e_i\in\mathbb{N}(i=1,\cdots, r)$である．
+の形に分解できる．ただし，$\varepsilon$は単元，$\pi_i\in\mathbb{Z}[i]$はどの二つも互いに同伴でない素元，$e_i\in\mathbb{N}(i=1,\ldots, r)$である．
 
 さらに，同伴な素元や積の順序交換によって互いに移り合うものを同じとみなすと，分解は一意に定まる．
 \end{theorem}
@@ -236,9 +236,9 @@ $n\leq k$を満たすすべての$n$で分解が存在したと仮定する．$\
 
 $n=1$のとき，$\alpha$は単元であるから（便宜的に）$r=0$とすると一意性は明らか．
 
-$n\leq k$を満たすすべての$n$で分解が一意（ただし，同伴な素元や積の順序交換によって互いに移り合うものを同じとみなす）であると仮定する．$\alpha$が二通りの素因数分解を持つと仮定し，単元$\delta,\varepsilon$，素元$\pi_i,\pi_j'$（それぞれどの二つも互いに同伴でない），$e_i,f_j\in\mathbb{N}(i=1,\cdots r,j=1,\cdots s)$を用いて
+$n\leq k$を満たすすべての$n$で分解が一意（ただし，同伴な素元や積の順序交換によって互いに移り合うものを同じとみなす）であると仮定する．$\alpha$が二通りの素因数分解を持つと仮定し，単元$\delta,\varepsilon$，素元$\pi_i,\pi_j'$（それぞれどの二つも互いに同伴でない），$e_i,f_j\in\mathbb{N}(i=1,\ldots r,j=1,\ldots s)$を用いて
 $$(\alpha=)\varepsilon\pi_1^{e_1}\cdots\pi_r^{e_r}=\delta\pi_1'^{f_1}\cdots\pi_s'^{f_s}\eqno(\star)$$
-とかけたとする．左辺は$\pi_1$の倍数であるから，$\delta,\pi_1',\cdots\pi_s'$のうちいずれかは$\pi_1$で割り切れる．$\pi_1|\delta$は明らかに不適．$\pi_1|\pi_1'$とすると，ある$x\in\mathbb{Z}[i]$が存在して$\pi_1'=\pi_1x$．$\pi_1'$は素元であるから既約元でもあり，$\pi_1$は単元でないから$x$が単元となる．よって$\pi_1$と$\pi_1'$は同伴．このことから，$(\star)$の両辺を$\pi_1$で割ると
+とかけたとする．左辺は$\pi_1$の倍数であるから，$\delta,\pi_1',\ldots\pi_s'$のうちいずれかは$\pi_1$で割り切れる．$\pi_1|\delta$は明らかに不適．$\pi_1|\pi_1'$とすると，ある$x\in\mathbb{Z}[i]$が存在して$\pi_1'=\pi_1x$．$\pi_1'$は素元であるから既約元でもあり，$\pi_1$は単元でないから$x$が単元となる．よって$\pi_1$と$\pi_1'$は同伴．このことから，$(\star)$の両辺を$\pi_1$で割ると
 $$\varepsilon\pi_1^{e_1-1}\cdots\pi_r^{e_r}=\delta y\pi_1'^{f_1-1}\cdots\pi_s'^{f_s}$$
 このとき$\delta y$は単元である．$\beta=\varepsilon\pi_1^{e_1-1}\cdots\pi_r^{e_r}=\delta y\pi_1'^{f_1-1}\cdots\pi_s'^{f_s}$とおくと，明らかに$N(\beta)<N(\alpha)=k+1$であり，$\beta\in\mathbb{Z}[i]$であるから$N(\beta)\leq k$．帰納法の仮定より，同伴な素元や積の順序交換によって互いに移り合うものを同じと見なすことで$\beta$の分解は一意であることが従う．この条件下で，$\alpha=\pi_1\beta$の分解も一意である．
 \end{proof}
@@ -258,7 +258,7 @@ $$\varepsilon\pi_1^{e_1-1}\cdots\pi_r^{e_r}=\delta y\pi_1'^{f_1-1}\cdots\pi_s'^{
 \begin{lemma*}
 奇素数$p$に対して，以下の1,2は同値
 \begin{enumerate}
- \item ある$a,b\in\mathbb{N}$が存在して$x^2+y^2=p$\\
+ \item ある$a,b\in\mathbb{N}$が存在して$a^2+b^2=p$\\
  \item $p$は$4n+1$型素数
 \end{enumerate}
 また，$p$が$4n+1$型素数のとき，組$(a,b)$は順序を除いて一意に定まる．
@@ -267,7 +267,7 @@ $$\varepsilon\pi_1^{e_1-1}\cdots\pi_r^{e_r}=\delta y\pi_1'^{f_1-1}\cdots\pi_s'^{
 \begin{proof}
 
 ((1)$\Longrightarrow$(2)の証明)
-$a^2+b^2=p$なる$a,b\in\mathbb{N}$が存在したとする．$p$は奇数なので$x^2,y^2$の偶奇は異なるから，$x,y$の偶奇は異なる．$s,t\in\mathbb{Z}_{\geq0}$を用いて$x=2s,y=2t+1$としてよい．このとき，$x^2+y^2=(2s)^2+(2t+1)^2=4(s^2+t^2+t)+1$となるから$p$は$4n+1$型素数．
+$a^2+b^2=p$なる$a,b\in\mathbb{N}$が存在したとする．$p$は奇数なので$a^2,b^2$の偶奇は異なるから，$a,b$の偶奇は異なる．$s,t\in\mathbb{Z}_{\geq0}$を用いて$a=2s,b=2t+1$としてよい．このとき，$a^2+b^2=(2s)^2+(2t+1)^2=4(s^2+t^2+t)+1$となるから$p$は$4n+1$型素数．
 
 ((2)$\Longrightarrow$(1)の証明)
 $p\equiv1\pmod4$なら，$p$は$\mathbb{Z}[i]$において素元ではないため，単元でない$a+bi,c+di\in\mathbb{Z}[i]$があり$p=(a+bi)(c+di)$となる．ノルムをとると，$p^2=(a^2+b^2)(c^2+d^2)$である．$a+bi,c+di$は単元でないから，$a^2+b^2,c^2+d^2>1$である．よって，$p=a^2+b^2=c^2+d^2$となるしかないため，示された．
@@ -308,12 +308,13 @@ $(N(\beta_1),N(\gamma_1))=(p,p),(N(\beta_2),N(\gamma_2))=(1,p^2)$のときも同
 
 $\alpha,\alpha^*$はそれぞれ$\beta_1^2,\beta_2^2$と同伴であるから，単元$\varepsilon$を用いて$p^2=\alpha\alpha^*=\varepsilon\beta_1^2\beta_2^2$と書ける．従って，$\varepsilon=\left(\frac{p}{\beta_1\beta_2}\right)^2$．$\varepsilon=\pm1,\pm i$であるから，以下個々の場合を調べる．
 
-(甲)\quad$\varepsilon=\pm1$のとき
-
-$\frac{p}{\beta_1\beta_2}=\pm1,\pm i$より単元$\delta$を用いて$p=\delta\beta_1\beta_2$となる．補題より，$p$の分解は同伴な素元と積の順序を無視して一意に定まり，$\beta_2=\beta_1^*$（$\beta_1$の複素共役）としてよい．このときある$x,y\in\mathbb{N}$を用いて$p=x^2+y^2$と書けて，組$(x,y)$は順序を除いて一意である．$i=1,2$に対して，$\beta_i,\gamma_i$は互いに同伴なので，組$(x,y)$と$(a,b)$は順序を除いて一対一に対応する．よって，組$(a,b)$は順序を除いて一意的である．
-
-(乙)\quad$\varepsilon=\pm i$のとき
-
+\begin{enumerate}
+    \item[(甲)] $\varepsilon=\pm1$のとき．\par
+    $\frac{p}{\beta_1\beta_2}=\pm1,\pm i$より単元$\delta$を用いて$p=\delta\beta_1\beta_2$となる．補題より，$p$の分解は同伴な素元と積の順序を無視して一意に定まり，$\beta_2=\beta_1^*$（$\beta_1$の複素共役）としてよい．このときある$x,y\in\mathbb{N}$を用いて$p=x^2+y^2$と書けて，組$(x,y)$は順序を除いて一意である．$i=1,2$に対して，$\beta_i,\gamma_i$は互いに同伴なので，組$(x,y)$と$(a,b)$は順序を除いて一対一に対応する．よって，組$(a,b)$は順序を除いて一意的である．
+    \item[(乙)] $\varepsilon=\pm i$のとき．\par
+    $z\in\mathbb{C}$の方程式$z^2=\pm i$を解くと$z=\frac{\pm1\pm i}{\sqrt{2}}$（複号任意）．よって$\frac{p}{\beta_1\beta_2}=\frac{\pm1\pm i}{\sqrt{2}}$．となるが，これは$p\in\mathbb{Z},\beta_1,\beta_2\in\mathbb{Z}[i]$に矛盾．よって$\varepsilon=\pm i$となる分解は存在しない．
+\end{enumerate}
+以上より，分解が存在するすべての場合において組$(a,b)$が一意に定まることが示された．
 $z\in\mathbb{C}$の方程式$z^2=\pm i$を解くと$z=\frac{\pm1\pm i}{\sqrt{2}}$（複号任意）．よって$\frac{p}{\beta_1\beta_2}=\frac{\pm1\pm i}{\sqrt{2}}$．となるが，これは$p\in\mathbb{Z},\beta_1,\beta_2\in\mathbb{Z}[i]$に矛盾．よって$\varepsilon=\pm i$となる分解は存在しない．
 
 以上より，分解が存在するすべての場合において組$(a,b)$が一意に定まることが示された．
@@ -327,7 +328,7 @@ $z\in\mathbb{C}$の方程式$z^2=\pm i$を解くと$z=\frac{\pm1\pm i}{\sqrt{2}}
 
 \begin{theorem*}
 
-$n\in\mathbb{N}$とする．$i=1,\cdots,n$として，$p_i$をどの二つも相異なる$4n+1$型素数，$f_i\in\mathbb{N}$とする．このとき，
+$n\in\mathbb{N}$とする．$i=1,\ldots,n$として，$p_i$をどの二つも相異なる$4n+1$型素数，$f_i\in\mathbb{N}$とする．このとき，
 $$a^2+b^2=p_1^{f_1}\cdots p_n^{f_n}$$
 を満たす正整数の組$(a,b)$は，順序を無視して少なくとも$2^{n-1}$個存在する．
 \end{theorem*}
@@ -337,10 +338,10 @@ $$a^2+b^2=p_1^{f_1}\cdots p_n^{f_n}$$
 ここまで読んでいただきありがとうございました．
 
 
-\begin{thebibliography}{Silverman}
- \bibitem  aJ.H.Silverman　著，鈴木治郎　訳，『はじめての数論』丸善出版，2022
- \bibitem  a雪江明彦　著，整数論１　『初等整数論から$p$進数へ』日本評論社，2021
- \bibitem  a【連続講義】代数的整数論への招待〜ガウス整数〜，Masaki Koga[数学解説]\url{https://youtube.com/playlist?list=PL5Pahvi5ekKeCDWgbVTV-WgONOqaDcc_g&si=iY7JpBMXgU3KcrpL)}
+\begin{thebibliography}{9}
+ \bibitem{a}  J.H.Silverman　著，鈴木治郎　訳，『はじめての数論』丸善出版，2022
+ \bibitem{b} 雪江明彦　著，整数論１　『初等整数論から$p$進数へ』日本評論社，2021
+ \bibitem{c}  【連続講義】代数的整数論への招待〜ガウス整数〜，Masaki Koga[数学解説]\url{(https://youtube.com/playlist?list=PL5Pahvi5ekKeCDWgbVTV-WgONOqaDcc_g&si=iY7JpBMXgU3KcrpL)}
 \end{thebibliography}
 
 
