@@ -42,8 +42,8 @@
 数学において，自明とも言えるような主張をわざわざ証明することがよくある。
 例えば，\\
 \begin{itemize}
-    \item 平面上に2点をとり、この2点を結ぶ連続な曲線を描く。そしてこの2点の位置関係が互いに反対側になるように直線を引いたとき、その曲線と直線とがどこかで必ず交点を持つ（中間値の定理）。
-    \item 平面上の2点を結ぶなめらかな曲線を書けば、どこかで接線は2点を結ぶ線分に並行になる（平均値の定理）。
+    \item 平面上に2点をとり，この2点を結ぶ連続な曲線を描く。そしてこの2点の位置関係が互いに反対側になるように直線を引いたとき，その曲線と直線とがどこかで必ず交点を持つ（中間値の定理）。
+    \item 平面上の2点を結ぶなめらかな曲線を書けば，どこかで接線は2点を結ぶ線分に並行になる（平均値の定理）。
     \item 平面から輪っかを除くと平面は「内側」と「外側」に分かれる（ジョルダンの閉曲線定理）。
 \end{itemize}
 
@@ -543,9 +543,9 @@ f(t)=(減少列T_{i_1}\supset T_{i_1i_2}\supset T_{i_1i_2i_3}\supset
 (後でまとめるがFact\refeq{Fact:Invariance of domain}と同じ)
 
 \begin{thm}\label{thm:Invariance of Domain}
-    n次元ユークリッド空間$\mathbb{R}^n$内の開集合$U$が与えられたとき、
-    $U$上の連続写像$f: U \rightarrow \mathbb{R}^n$ が単射であるならば、
-    $f(U)$も開集合であり、$f: U \rightarrow f(U)$ は同相写像である。
+    n次元ユークリッド空間$\mathbb{R}^n$内の開集合$U$が与えられたとき，
+    $U$上の連続写像$f: U \rightarrow \mathbb{R}^n$ が単射であるならば，
+    $f(U)$も開集合であり，$f: U \rightarrow f(U)$ は同相写像である。
 \end{thm}
 
 開集合，同相などの定義は
@@ -766,7 +766,7 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 詳しくは参考文献\cite{utida}\cite{takagi}を参照。
 
 \begin{definition}\label{Def:metric space}[距離空間]\\
-    距離空間は、以下の条件を満たす集合と関数の組$(X, d)$のことを言う。：
+    距離空間は，以下の条件を満たす集合と関数の組$(X, d)$のことを言う。：
     \begin{itemize}
         \item 距離関数 $d : X \times X \to \mathbb{R}$ は以下の性質を満たす。：
               \begin{enumerate}
@@ -786,12 +786,12 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
         \forall x \in X, \forall \varepsilon > 0, \exists \delta > 0 \text{  s.t.  } d_X(x, y) < \delta \Rightarrow d_Y(f(x), f(y)) < \varepsilon
     \]
     を満たすことを言う。
-    ここで、\(d_X\) は \(X\) 上の距離関数、\(d_Y\) は \(Y\) 上の距離関数を表す。
+    ここで，\(d_X\) は \(X\) 上の距離関数，\(d_Y\) は \(Y\) 上の距離関数を表す。
 
 \end{definition}
 
 \begin{definition}\label{Def:injection}[単射性]\\
-    関数 \(f: A \rightarrow B\) が単射であるとは、
+    関数 \(f: A \rightarrow B\) が単射であるとは，
     \[
         \forall x_1, x_2 \in A, \quad x_1 \neq x_2 \Rightarrow f(x_1) \neq f(x_2)
     \]
@@ -799,7 +799,7 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 \end{definition}
 
 \begin{definition}\label{Def:surjection}[全射性]\\
-    関数 \(f: A \rightarrow B\) が全射であるとは、
+    関数 \(f: A \rightarrow B\) が全射であるとは，
     \[
         \forall y \in B, \quad \exists x \in A \text{  s.t.  } f(x) = y
     \]
@@ -807,12 +807,12 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 \end{definition}
 
 \begin{definition}\label{Def:open set}[開集合]\\
-    集合 \(U\) が(距離空間の)開集合であるとは、
+    集合 \(U\) が(距離空間の)開集合であるとは，
     \[
         \forall x \in U, \exists r > 0 \text{  s.t.  } I_r(x) \subseteq U
     \]
     が成り立つ事を言う。
-    ここで、\(I_r(x)\) は \(x\) を中心とする半径 \(r\) の開球を表す。\\
+    ここで，\(I_r(x)\) は \(x\) を中心とする半径 \(r\) の開球を表す。\\
     つまり
     \(I_r(x)= \{y \in X \, | \, d(x, y) < r\}\)\\
     同様に閉球\(D^n(r)，球面S^n(r)も\)
@@ -822,7 +822,7 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 \end{definition}
 
 \begin{definition}\label{Def:closed set}[閉集合]\\
-    集合 \(U\) が(距離空間の)閉集合であるとは、
+    集合 \(U\) が(距離空間の)閉集合であるとは，
     Uの補集合が開集合である事を言う。
 \end{definition}
 
@@ -843,7 +843,7 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 
 \begin{definition}\label{Def:interior}[内部]\\
     \(
-    ある距離空間（X, d）において、集合A(\subset X)の内部A^iとは，
+    ある距離空間（X, d）において，集合A(\subset X)の内部A^iとは，
     A^i = \{ x \in X \mid \forall r > 0, \exists y \in X, \ (d(x, y) < r \rightarrow y \in A) \}
     で定まる集合を言う。この集合は開集合になる。
     \)
@@ -851,15 +851,15 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 
 \begin{definition}\label{Def:Normal space}[正規空間]\\
     位相空間 \(X\) が正規空間であるとは，
-    \(T_4\)であり、かつ\(T_1\)であることを言う。
+    \(T_4\)であり，かつ\(T_1\)であることを言う。
     ただし，：
     \begin{enumerate}
-        \item \(X\) が\(T_4\)とは，任意の閉集合 \(F\) と \(F\) に属さない \(x\) に対して、
-              開集合 \(U\) と \(V\) が存在し、
+        \item \(X\) が\(T_4\)とは，任意の閉集合 \(F\) と \(F\) に属さない \(x\) に対して，
+              開集合 \(U\) と \(V\) が存在し，
               \(F \subset U\)，\(x \in V\)，\(U \cap V = \emptyset\)
               を満たす。
         \item \(X\) が\(T_1\)とは，
-              異なる二つの点 \(x\) と \(y\) に対して、
+              異なる二つの点 \(x\) と \(y\) に対して，
               片方が含まれているがもう一方が含まれていないような開集合が存在する。
     \end{enumerate}
     特に距離空間は正規空間である。
@@ -868,7 +868,7 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 
 \begin{definition}\label{Def:Hausdorff space}[ハウスドルフ(Hausdorff)空間]\\
     位相空間 \(X\) がハウスドルフ(Hausdorff)空間であるとは，
-    任意の異なる二つの点 \(x\) と \(y\) に対し、
+    任意の異なる二つの点 \(x\) と \(y\) に対し，
     \(x \in U\)，\(y \in V\)，\(U \cap V = \emptyset\)
     なるXの開集合U,Vが存在すXを言う。
 \end{definition}
@@ -902,19 +902,19 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 \end{definition}
 
 \begin{definition}\label{Def:retract}[レトラクト]\\
-    位相空間 $X$ とその部分空間 $A$ に対して、
-    写像 $r : X \rightarrow A$ が以下の条件を満たす場合、
+    位相空間 $X$ とその部分空間 $A$ に対して，
+    写像 $r : X \rightarrow A$ が以下の条件を満たす場合，
     $r$ を $X$ から $A$ へのレトラクトと呼ぶ：
     \begin{enumerate}
         \item 任意の $a \in A$ に対して $r(a) = a$。
-        \item 包含写像 $i : A \hookrightarrow X$ について、$r \circ i = \text{Id}_A$。
+        \item 包含写像 $i : A \hookrightarrow X$ について，$r \circ i = \text{Id}_A$。
     \end{enumerate}
 \end{definition}
 
 
 \begin{definition}\label{Def:homotopic}[ホモトピック]\\
     2つの位相空間 $X$ と $Y$ の間の2つの連続写像 $f$ と $g$ が
-    ホモトピックであるとは、次の条件を満たす連続写像
+    ホモトピックであるとは，次の条件を満たす連続写像
     $F: X \times [0,1] \to Y$ が存在することを言う：
 
     \begin{align*}
@@ -949,23 +949,23 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 定理の特殊な場合にはなっている。
 
 \begin{fact}\label{Fact:Invariance of domain}[Invariance of domain](証明は参考文献\cite{tao}参照)\\
-    n次元ユークリッド空間$\mathbb{R}^n$内の開集合$U$が与えられたとき、
-    $U$上の連続写像$f: U \rightarrow \mathbb{R}^n$ が単射であるならば、
-    $f(U)$も開集合であり、$f: U \rightarrow f(U)$ は同相写像である。
+    n次元ユークリッド空間$\mathbb{R}^n$内の開集合$U$が与えられたとき，
+    $U$上の連続写像$f: U \rightarrow \mathbb{R}^n$ が単射であるならば，
+    $f(U)$も開集合であり，$f: U \rightarrow f(U)$ は同相写像である。
 \end{fact}
 
 \begin{fact}\label{Fact:Brouwer fixed-point theorem}[Brouwer fixed-point theorem](証明は参考文献\cite{kawazumi}参照)\\
     任意の連続写像$f: D^n \rightarrow D^n$
-    は、少なくとも1つの点$x_0 \in D^n$で、
+    は，少なくとも1つの点$x_0 \in D^n$で，
     $f(x_0) = x_0$ が成り立つ。
 \end{fact}
 
 
 \begin{fact}\label{Fact:Tietze extension theorem}[Tietze extension theorem](証明は参考文献\cite{kawazumi}参照)\\
     Xが距離空間で，その
-    閉集合$A$上での連続関数$f: A \rightarrow [0, 1]^n$が与えられたとき、
+    閉集合$A$上での連続関数$f: A \rightarrow [0, 1]^n$が与えられたとき，
     それをX上に拡張できる。
-    つまり$X$上の連続関数$F: X \rightarrow [0, 1]^n$ が存在し、
+    つまり$X$上の連続関数$F: X \rightarrow [0, 1]^n$ が存在し，
     任意の\(x\in Aに対し，F(x) = f(x)\)となる。
 \end{fact}
 
@@ -975,12 +975,12 @@ Definition\refeq{Def:open set},\refeq{Def:homeomorphic}などを参照。
 \begin{fact}\label{Fact:Urysohn's Lemma}[Urysohn's Lemma](証明は参考文献\cite{kawazumi}参照)\\
     \(X\) を正規空間とし，
     \(A\) と \(B\) を \(A \cap B = \emptyset\) となる互いに交わらない閉集合とする。
-    このとき、次の条件を満たす連続な実数値関数 \(f: X \to [0, 1]\)
+    このとき，次の条件を満たす連続な実数値関数 \(f: X \to [0, 1]\)
     が存在する：
     \begin{enumerate}
-        \item 任意の \(x \in A\) に対して、\(f(x) = 0\)。
-        \item 任意の \(x \in B\) に対して、\(f(x) = 1\)。
-        \item 任意の \(x \in X\) に対して、\(0 \leq f(x) \leq 1\)。
+        \item 任意の \(x \in A\) に対して，\(f(x) = 0\)。
+        \item 任意の \(x \in B\) に対して，\(f(x) = 1\)。
+        \item 任意の \(x \in X\) に対して，\(0 \leq f(x) \leq 1\)。
     \end{enumerate}
 \end{fact}
 
