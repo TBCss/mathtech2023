@@ -1,0 +1,506 @@
+\documentclass{ltjsarticle}
+\title{Galois理論による代数学の基本定理の証明}
+\author{MathTech部員　田中大地}
+\date{}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{mathtools}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{prop}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+\setlength{\parindent}{0pt}%インデント
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\begin{document}
+\maketitle
+\section{はじめに}
+こんにちは。今回は、Galois理論の話を書きたいと思います。
+Galois理論は方程式の可解性や作図問題の応用がありますが、代数学の基本定理の証明にも
+応用することができます。本記事でその証明を紹介したいと思います。
+前提知識として群論(正規部分群、剰余群、準同型定理など)
+と体論(分離拡大と正規拡大の基本性質など)を仮定するので、高校生には難しい
+内容かと思いますが、大学の代数学の感じが伝わればいいなと思います。
+まず、主張を正確に書きます。
+\begin{theorem}\label{algethm}(代数学の基本定理)
+ $ a_0,a_1,\cdots ,a_n \in \mathbb{C},a_n\ne 0$とする。\\
+ このとき多項式$f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots +a_0 $は$\mathbb{C}$内に根を持つ。
+\end{theorem}
+証明は、代数学の基本定理が成り立たないと仮定すると複素数体$\mathbb{C}$の
+二次拡大体が構成できるが、複素数体$\mathbb{C}$は二次拡大体を持たない事も示せるので、
+矛盾となるというものです。
+以下、証明に使う群論とガロア理論について説明します。
+\section{群論}
+群論で必要な定理は定理\ref{pgrp}と定理\ref{sylow}である。この二つの定理を
+しめすために群の作用という概念を導入します。
+\begin{definition}(群作用)
+  $G$:群、$X$:集合とする。
+  \[G\times X\ni (g,x)\longmapsto gx\in X\]
+  がつぎの(1)、(2)を満たすとき、この写像を作用といい、
+  $G\curvearrowright X$と書く。
+  \begin{enumerate}
+    \item[(1)] $\forall x\in X,ex=x$
+    \item[(2)] $\forall g,h\in G,\forall x\in x,g(hx)=(gh)x$
+  \end{enumerate}
+ また、$G\curvearrowright X$の時、
+ $x\in X$に対して、\\
+ $\mathrm{Stab}(x)=\{g\in G\mid gx=g\}$を$x$の安定化群、
+ $\mathrm{Orb}(x)=\{gx\mid g\in G\}$を$x$の軌道という。
+\end{definition}
+\newpage
+次が成り立つ。
+\begin{prop}(軌道分解)\qquad
+  $G\curvearrowright X$のとき、$X=\bigsqcup  _{\mathrm{Orb}(x)}\mathrm{Orb}(x)$  
+\end{prop}
+\begin{proof}
+  $x\in\mathrm{Ord}(x)(\forall x\in X)$また$\forall x,y\in X$に対して
+  $\mathrm{Ord}(x)=\mathrm{Ord}(y)
+  \mathrm{または}\mathrm{Ord}(x)\cap\mathrm{Ord}(y)=\phi \forall$
+  なることが定義からわかるので、従う。
+\end{proof}
+\begin{prop}
+  $G\curvearrowright X$とする。\\
+  $x\in X$に対して、$\mathrm{Stab}(x)$は$G$の正規部分群であり、
+  $\left|G/\mathrm{Stab}(x)\right|=\left|\mathrm{Orb}(x)\right|$となる。
+\end{prop}
+\begin{proof}
+  \[\begin{array}{ccc}
+    G/\mathrm{Stab}(x) &\longrightarrow &\mathrm{Orb}(x)\\
+    \rotatebox{90}{\in}&                &\rotatebox{90}{\in}\\
+    \overline{g}       &\longmapsto     &gx\\
+  \end{array}\]
+  によって一対一に対応する。
+\end{proof}
+\begin{definition}$G$を群とする。\\
+    (1) $Z_G=\{h\in G\mid \forall g\in G,gh=hg\}$を$G$の中心という。\\
+    (2) $p$素数とするとき、位数が$p$べきである群を$p$群という。
+\end{definition}
+$G$:有限群、$X=G$として、
+\[ G\times X\ni (g,h)\longmapsto ghg^{-1}\in X\]
+を考えると作用になる。この作用について軌道分解の代表元$\{h_i\}$をとると、
+\begin{align*}
+             G=&\bigsqcup _{i}\left|\mathrm{Orb}(h_i)\right|\\
+              =&\left(\bigsqcup _{i,h_i\in Z_G}\mathrm{Orb}(h_i)\right)\bigsqcup
+              \left(\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h_i)\right)\\
+              =&\left(\bigsqcup _{i,h_i\in Z_G}\{h_i\}\right)\bigsqcup 
+              \left(\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h_i)\right)
+\end{align*}
+ここで、任意の$h\in Z_{G}$は
+$\bigsqcup _{i,h_i\notin Z_G}\mathrm{Orb}(h)$
+に含まれないから、$h\in\bigsqcup _{i,h_i\in Z_G}\{h_i\}$
+従って$Z_{G}=\bigsqcup _{i,h_i\in Z_G}\{h_i\}$
+となるから、
+\begin{equation}\label{kyouyaku}
+    |G|=|Z_{G}|
+              +\sum_{i,h_i\notin Z_G}\left|\mathrm{Orb}(h_i)\right|
+\end{equation}
+$|G|=p^n$のとき、$h\notin Z_G$なら
+$\left|\mathrm{Orb}(h)\right|
+=\frac{|G|}{|\mathrm{Stab}(h)|}=\frac{p^n}{|\mathrm{Stab}(h)|},\>
+\left|\mathrm{Stab}(h)\right|< |G|=p^n$となるから、$|\mathrm{Orb}(h)|$は$p$の倍数、
+よって、(\ref{kyouyaku})より$|Z_G|$は$p$の倍数である。
+また、$Z_G\supseteq \{e\}$だから、次が言えた。
+\begin{theorem}
+  $G$を$p$群とするするとき、$Z_G\supsetneq \{e\}$
+\end{theorem}
+\begin{theorem}\label{pgrp}
+  $G$が$p$群で、$|G|=p^n$なら$0\leqq\forall t\leqq n$に対して
+  位数$p^t$の部分群を持つ。
+\end{theorem}
+\begin{proof}
+ $n$の帰納法で示す。$n=1$は明らか$n-1$まで成り立つとして$n$のときを示す。
+  $Z_G\varsupsetneq \{e\}$の位数pの元$x$をとり、$\mathrm{N}=\langle x\rangle$とする。
+  $N$は$G$の正規部分群であり、$G/N$は位数$p^{n-1}$の群であるから帰納法の仮定から
+  $0\leqq\forall t\leqq n-1$に対して位数$p^t$の部分群がある。言い換えれば
+  $0\leqq\forall t\leqq n-1$に対して指数$p^t$の部分群がある。ここで、
+  部分群の対応
+  \[\{G\mathrm{の}N\mathrm{を含む部分群}\}
+  \longleftrightarrow
+   \{G/N\mathrm{の部分群}\}\]
+において、対応する部分群の指数は保たれる。実際、
+$N\subset H\subset G$なる部分群Hをとると、
+対応する$G/N$の部分群は$\tilde{H}=H/N$である。
+このとき、つぎの写像
+\[\left(G/N\right)/\tilde{H}\ni
+\overline{g}\tilde{H}\longmapsto gH\in G/H\]
+\[G/H\ni gH\longmapsto\overline{g}\tilde{H}\in\left(G/N\right)/\tilde{H}\]
+は互いに逆写像となる。\\
+よって、この部分群から$G$には指数が
+$p^t(0\leqq t\leqq n-1)$の部分群が存在することが分かった。
+$\{e\}$は指数$p^n$の部分群だから、$t=n$の場合も存在する。これは位数
+$p^t(0\leqq \forall t\leqq n)$の部分群が存在することを意味するので
+証明が完了した。
+\end{proof}
+\begin{theorem}\label{sylow}(Sylow)
+  $G$を有限群で、$|G|=p^nm$($p,m$は互いに素)とする。このとき部分群$H$で
+  $|H|=p^n$なるものがある。 
+\end{theorem}
+\begin{proof}
+  $X=\{S\subset G\mid |S|=p^n(\mathrm{但し}S\mathrm{は部分群とは限らない})\}$とする。\\
+  \[\begin{array}{ccc}
+    G\times X               &\longrightarrow &X\\
+    \rotatebox{90}{$\in$} &                &\rotatebox{90}{$\in$}\\
+    (g,S)                   &\longmapsto      &gS=\{gs|s\in S\}\\
+  \end{array}\]
+  は作用となる。
+  \begin{align*}
+                   |X|=&\left(
+                              \begin{array}{c}
+                                     p^nm\\
+                                     p^n
+                              \end{array}
+                         \right)
+                      =\left((x+1)^{p^nm}\mathrm{の}x^{p^n}\mathrm{の係数}\right) \\ 
+    (x+1)^{p^nm}\equiv &(x^{p^{n}}+1)^m\qquad \mod p\\
+    \therefore |X|=&\left(
+                          \begin{array}{c}
+                                  p^nm\\
+                                  p^n
+                          \end{array}
+                    \right)
+                  \equiv m\qquad \mod p
+  \end{align*}
+  軌道分解を考えると、\\
+  \[|X|=\sum_{\mathrm{Orb}(S)}\left|\mathrm{Orb}(S)\right|\equiv m\not\equiv 0\qquad \mod p\]
+  だから、$\left|\mathrm{Orb}(S)\right|\not\equiv 0$となる$S$がある。$H=\mathrm{Stab}(S)$
+  とおく。
+  \[S=\bigcup _{y\in H}Hy=\bigsqcup _{Hy}Hy\]
+  よって$|Hg|=|H|$より$|S|=p^n$は$|H|$で割り切れるので。
+  $|H|=p^k(0\leqq k\leqq n)$と書ける。また、
+  \[\frac{|G|}{|H|}=p^{n-k}m
+  =\left|\mathrm{Orb}(S)\right|\not\equiv0\qquad \mod p\]
+  から、$k=n\therefore |H|=p^n$となり、$H$が求める部分群。
+\end{proof}
+\newpage
+\section{Galois理論}
+本節の目標はThm\ref{gal}である。
+\begin{definition}
+  $K/F$を代数拡大とする。\\
+  (1) $\forall\alpha\in K$の$F$上最小多項式が$K$上で一次多項式の積に分解されるとき$K/F$を正規拡大という。\\
+  (2) $\forall\alpha\in K$の$F$上最小多項式が$K$の代数閉包で重根を持たないとき$K/F$を分離拡大という。\\
+  (3) $K/F$が正規拡大かつ分離拡大のとき、$K/F$をGalois拡大という。\\
+  (4) $K/F$有限次Galois拡大とするとき
+        $\mathrm{Gal}(K/F)=\{f\in \mathrm{Aut} (K)\mid f(x)=x(\forall x\in F)\}$をGalois群という。
+\end{definition}
+\begin{theorem}
+  $K/F$を有限次Galois拡大とする。このとき、$[K:F]=\left|\mathrm{Gal}(K/F)\right|$
+  ただし$[K:F]$はK/Fの拡大次数。
+\end{theorem}
+\begin{proof}
+  $K/F$は分離拡大だから、$\overline{K}$を$K$の代数閉包とするとき、
+  $\left|\mathrm{Hom}_F(K,\overline{K})\right|=[K:F]$である。
+  $K/F$は正規拡大でもあるから、$\forall \sigma\in \mathrm{Hom}_F(K,\overline{K})$について
+  $\sigma (K)\subset K$である。$\mathrm{Ker} \sigma =0,[K:F]<\infty$
+  なので次元定理から$\sigma(K)=K$となる。
+  よって$\mathrm{Hom}_F(K,\overline{K})=\mathrm{Gal}(K/F)$なので、従う。
+\end{proof}
+\begin{theorem}\label{artin}(Artin)
+  $K$を体とし、$G$を$\mathrm{Aut}(K)$の有限部分群とする。このとき\\
+  $F=K^G=\{x\in K|\sigma (x)=x(\forall\sigma\in G)\}$
+  とすれば、$K/F$は有限次Galois拡大で$Gal(K/F)=G$となる。
+\end{theorem}
+\begin{proof}
+  $\alpha\in K$に対し
+  $\alpha =\{\sigma\in G|\sigma (\alpha)=\alpha\},
+  G=\bigsqcup_{i=1}^{n} {\sigma_i H_\alpha}$,
+  \[f_\alpha(X)=(X-\sigma _1(\alpha))(X-\sigma _2(\alpha))\cdots
+  (X-\sigma _n(\alpha))\in K[X]\]
+  とする。
+  $\forall\sigma\in G$に対して
+  \[\begin{array}{ccc}
+                      G/H_\alpha &\longrightarrow &G/H_\alpha\\
+    \rotatebox{90}{\in}          &                &\rotatebox{90}{\in} \\
+    \sigma _i H_\alpha   &\longmapsto     &\sigma\sigma_i H_\alpha\\   
+    \end{array}
+    \]
+    は全単射であるので、
+  \begin{align*}
+    \sigma(f_\alpha(X))=&(X-\sigma\sigma _1(\alpha))(X-\sigma\sigma _2(\alpha))\cdots
+    (X-\sigma\sigma _n(\alpha))\\
+                =&f_\alpha(X)
+  \end{align*}
+  となり、$f(X)\in F[X]$。また、
+  $\sigma _i(\alpha)=\alpha$なる$i$があるから、$f_\alpha(\alpha)=0$であり、
+  $\sigma _i(\alpha)=\sigma _j(\alpha)\Longleftrightarrow 
+  \sigma _i H_\alpha =\sigma _i H_\alpha$
+  だから、$f_\alpha(X)$は分離多項式。よって$K/F$はGalois拡大。
+  $K/F$が無限次拡大なら、$\beta _1,\beta _2,\cdots$を
+  \[F\subsetneq F(\beta _1)\subsetneq  F(\beta _1,\beta _2)\subsetneq\cdots\]
+  となるように取れるので、中間体
+  $M(F\subset M\subset K)$で、
+  $|G|<[F:M]<\infty$である$M$がある。$M/F$は有限次分離拡大だから、
+  $M=F(\beta)$となる$\beta\in M$をとると
+  \[[M:F]=\deg f_\beta(X)<|G|\]
+  なるから、矛盾。$K/F$は有限次Galois拡大である。\\
+  最後に、$\mathrm{Gal}(K/F)=G$を示す。定義より
+  $\mathrm{Gal}(K/F)\supset G$である。
+  $\forall \sigma\in \mathrm{Gal}(K/F)$に対して、
+  \[f_\alpha (\sigma(\alpha))=\sigma (f_\alpha (\alpha))=0\]
+  なので、$\sigma (\alpha)=\sigma _i(\alpha)(\exists i)
+  \therefore \sigma =\sigma _i(\exists i)$
+  よって、$\mathrm{Gal}(K/F)\subset G$となるから、
+  $\mathrm{Gal}(K/F)=G$を得る。
+\end{proof}
+$K/F$を有限次Galois拡大、$G=\mathrm{Gal}(K/F)$とする。
+\begin{itemize}
+  \item 中間体$M$に対し、$H(M)=\{\sigma\in G\mid \forall x\in M,\sigma(x)=x\}$とおく。
+  \item 部分群$H\subset G$に対して、$M_ H=\{x\in K\mid \forall\sigma\in H,\sigma(x)=x\}$とおく。
+\end{itemize}
+\begin{prop}\label{tyuukanngal}
+  $K/F$を有限次Galois拡大とする。中間体$M$に対し、$K/M$有限次Galois拡大であり、
+  $\mathrm{Gal}(K/F)=H(M)$となる。
+\end{prop}
+\begin{proof}
+  定義から有限次Galois拡大であること、
+  $\mathrm{Gal}(K/F)=H(M)$であることが確かめられる。
+\end{proof}
+\begin{theorem}\label{gal} (Galoisの基本定理)\\
+  $K/F$を有限次Galois拡大とする。
+  \begin{enumerate}
+    \item [(1)]
+          $\mathbb{M}=\{K/F\mathrm{の中間体}M\},\mathbb{H}=\{\mathrm{Gal}(K/F)\mathrm{の部分群}\}$
+          とおくとき、
+          \[\mathbb{M}\ni M\longmapsto H(M)\in\mathbb{H}\]
+          \[\mathbb{H}\ni H\longmapsto M_H\in\mathbb{M}\]
+           によって、一対一に対応する。
+    \item [(2)]
+          $M_1,M_2\in\mathbb{M}$がそれぞれ$H_1,H_2\in\mathbb{H}$に対応するとき
+          \begin{align*}
+            M_1\subset M_2&\Longleftrightarrow H_1\supset H_2\\
+            M_1\cdot M_2&\longleftrightarrow H_1\cap H_2\\
+            M_1\cap M_2&\longleftrightarrow \langle H_1,H_2\rangle
+          \end{align*}
+    \item[(3)]
+         $M\longleftrightarrow H$のとき
+         \[M/F\mathrm{がGalois拡大}\Longleftrightarrow H\vartriangleleft G\]
+         であり、このとき
+         \[\mathrm{Gal}(M/F)\cong \mathrm{Gal}(K/F)/H\]
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  (1)
+$M\in\mathbb{M}$とする。$M_{H(M)}=\{x\in K\mid \forall \sigma\in H(M),\sigma (x)=x\}$
+であるから、$M\subset M_{H(M)}$である。Thm\ref{artin}より$K/M_{H(M)}$は有限次Galois拡大
+であり、$\mathrm{Gal}(K/M_{H(M)})=H(M)$となる。一方Prop\ref{tyuukanngal}
+から$K/M$も有限次Galois拡大で$\mathrm{Gal}(K/M)=H(M)$なので、
+\[[M_{H(M)}:M]=\frac{[K:M]}{[K:M_{H(M)}]}=\frac{|H(M)|}{|H(M)|}=1\]
+よって$M=M_{H(M)}$\\
+$H\in\mathbb{H}$とする.$H(M_H)=\{\sigma\in \mathrm{Gal}(K/F)|\forall x\in M_H,\sigma(x)=x\}$
+であるので、$H\subset H(M_H)$となる。Thm\ref{artin}から
+$K/M_H$は有限次Galois拡大であり、$\mathrm{Gal}(K/M_H)=H$となる。一方Prop\ref{tyuukanngal}
+より$\mathrm{Gal}(K/M_H)=H(M_H)$なので、$H=H(M_H)$となる。\\
+(2)
+$M_1\subset M_2\Longleftrightarrow H_1\supset H_2$は明らか。\\
+$M_1\cdot M_2\supset M_i(i=1,2)$より、$H(M_1\cdot M_2)\subset H(M_1)\cap H(M_2)$
+である。$ H(M_1)\cap H(M_2)$の各元は$M_1,M_2$を不変にするので、$M_1\cdot M_2$を不変にする。
+よって$H(M_1\cdot M_2)\supset H(M_1)\cap H(M_2)$だから、$H(M_1\cdot M_2)= H(M_1)\cap H(M_2)$\\
+$M_1\cap M_2\subset M_i(i=1,2)$なので、$H(M_1\cap M_2)\supset \langle H(M_1),H(M_2)\rangle= \langle H_1,H_2\rangle $
+である。$H=\langle H_1,H_2\rangle$とすると、$H\supset H_i(i=1,2)$だから、
+$M_H\subset M_{H_i}=M_i(i=1,2)$となり、$M_H\subset M_1\cap M_2
+\therefore H\supset H(M_1\cap M_2)$よって
+$H(M_1\cap M_2)=\langle H_1,H_2\rangle$\\
+(3)
+$M$を中間体とする。$M\longleftrightarrow H$とする。
+\begin{align*}
+  M/F\mathrm{が有限次Galois拡大}&\xLeftrightarrow{(a)} M/F\mathrm{が正規拡大}\\
+                               &\xLeftrightarrow{(b)} \forall\sigma\in\mathrm{Gal}(K/F),\sigma (M)\subset M\\
+                               &\xLeftrightarrow{(c)} H\vartriangleleft \mathrm{Gal}(K/F)
+\end{align*}
+$(a)$
+$K/F$が有限次分離拡大だから成り立つ。\\
+$(b)$
+$(\Rightarrow)\;\>\alpha\in M$の$F$上最小多項式を$f(X)$とすると、$M/F$が正規拡大であることから
+$f(X)=\prod _i (X-\alpha_i)\quad (\alpha_i\in M)$とかける。$f(\sigma (\alpha))=\sigma (f(\alpha))=0$
+なので、 $\sigma (\alpha)=\alpha _i\in M$である。\\
+$(\Leftarrow)\;\>\>\alpha\in M$とする。
+\[f(X)=\prod _{\sigma\in\mathrm{Gal}(K/F)}(X-\sigma (\alpha))\]
+とすると、$\sigma(f(X))=f(X)\>(\forall \sigma)$より$f(X)\in F[X]$である。
+$f(X)$は$\alpha$を根に持ち$M$上で一次因子の積に分解されるので、$\alpha$の$F$上
+最小多項式も$M$上で一次因子の積に分解されるので$M/F$は正規拡大である。\\
+(c)
+$(\Rightarrow)\;\>$$\sigma\in\mathrm{Gal}(K/F),\tau\in H,x\in M$に対して
+$\sigma(x)\in M$ゆえ$\sigma ^{-1}\tau\sigma (x)=\sigma ^{-1}\sigma (x)=x$となるから
+$\sigma ^{-1}\tau\sigma\in H$よって$H\vartriangleleft\mathrm{Gal}(K/F)$となる。\\
+$(\Leftarrow)\;\>$$\sigma\in\mathrm{Gal}(K/F),\tau\in H$について
+$\sigma ^{-1}\tau\sigma\in H$なので$x\in M$なら
+$\sigma ^{-1}\tau\sigma(x)=x$つまり$\tau\sigma(x)=\sigma(x)$
+これが任意の$\tau\in H$で成り立つので$\sigma(x)\in M$よって、
+$\sigma(M)\subset M$\\
+最後に$\mathrm{Gal}(M/F)\cong \mathrm{Gal}(K/F)/H$について\\
+\[
+  \begin{array}{ccc}
+  \mathrm{Gal}(K/F)   &\longrightarrow &\mathrm{Gal}(M/F)\\
+  \rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
+  \sigma              &\longmapsto     &\sigma |_M         
+  \end{array}
+\]
+に準同型定理を使うと、単射準同型
+\[
+  \begin{array}{ccc}
+  \mathrm{Gal}(K/F)/H &\longrightarrow &\mathrm{Gal}(M/F)\\
+  \rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
+  \sigma  H           &\longmapsto     &\sigma |_M         
+  \end{array}
+\]を得る。
+ここで、Prop\ref{tyuukanngal}より、$H=\mathrm{Gal}(K/M)$なので
+\begin{align*}
+  \left|\mathrm{Gal}(K/F)/H\right|&=\frac{|\mathrm{Gal}(K/F)|}{|\mathrm{Gal}(K/M)|}\\
+                                  &=\frac{[K:F]}{[K:M]}\\
+                                  &=[M:F]\\
+                                  &=|\mathrm{Gal}(M/K)|
+\end{align*}
+となるから、全射でもあるから$\mathrm{Gal}(M/F)\cong \mathrm{Gal}(K/F)/H$がいえた。
+\end{proof}
+\newpage
+本記事の目標には関係ないが、興味深いのでGalois群の計算例を紹介しよう。
+\begin{example}\label{ex1}
+  体の拡大$\mathbb{Q}(\sqrt[4]{2},i)/\mathbb{Q}$を考える。
+  これは、$f(X)=X^4-2\in \mathbb{Q}[X]$の最小分解体だから、有限次Galois拡大
+  である。Eisensteinの既約判定定理から$f(X)$は既約多項式であるから
+  $[\mathbb{Q}(\sqrt[4]{2}]:\mathbb{Q}]=4$である。
+  $i$の$\mathbb{Q}$上最小多項式は$X^2+1$であるので、
+  $[\mathbb{Q}(\sqrt[4]{2},i):\mathbb{Q}(\sqrt[4]{2})]\leqq 2$である。
+  また$i\not\in\mathbb{Q}$なので、
+  $[\mathbb{Q}(\sqrt[4]{2},i):\mathbb{Q}(\sqrt[4]{2})]=2$となる。
+  ゆえに、$[\mathbb{Q}(\sqrt[4]{2},i):\mathbb{Q}]=8$である。Galois群
+  を$G$とおく。
+  $\sigma\in G$は、
+  $(\sigma(\sqrt[4]{2}),\sigma(i))\in
+  \{\sqrt[4]{2},-\sqrt[4]{2},i\sqrt[4]{2},-i\sqrt[4]{2}\}\times 
+  \{i,-i\}$により決まるが、$|G|=8$だから、どの8パターンの対応をとる
+  $\sigma\in G$も存在する。ここで
+  \[\alpha _1=\sqrt[4]{2},\alpha _2=-\sqrt[4]{2},
+  \alpha _3=i\sqrt[4]{2},\alpha_4=-i\sqrt[4]{2}\]
+  とおく。すると次の単射準同型が考えられる。
+  \[\begin{array}{cccc}
+    \phi:&G                   &\longrightarrow &S_4\\
+         &\rotatebox{90}{\in} &                &\rotatebox{90}{\in}\\
+         &\sigma              &\longmapsto     &
+    \left(\begin{array}{cccc}
+    1&2&3&4\\
+    t_1&t_2&t_3&t_4
+    \end{array}\right)
+  \end{array}
+    \]
+ただし$\sigma(\alpha_i)=\alpha_{t_i}(i=1,2,3,4)$である。\\
+$\sigma_1,\sigma_2\in G$を$\sigma_1(\alpha_1)=\alpha_3,\sigma_1(i)=i,
+\sigma_2(\alpha_1)=\alpha_1,\sigma_2(i)=-i$となるようにとるとき、
+$G$は$\sigma_1,\sigma_2$で生成される。
+$\phi(\sigma_1)=\begin{pmatrix}1&3&2&4\end{pmatrix}$,
+$\phi(\sigma_2)=\begin{pmatrix}3&4\end{pmatrix}$
+であるので、$G\cong  \left\langle 
+  \begin{pmatrix}1&3&2&4\end{pmatrix},
+  \begin{pmatrix}3&4\end{pmatrix}
+\right\rangle $となる。
+\end{example}
+\begin{example}\label{xe2}(Artin-Schreier拡大)\\
+ $\mathrm{ch}F=p$なる体$F$と$F$上多項式$f(X)=X^p -X-a$を考える。
+ ここで$a\notin\{x^p-x\mid x\in F\}$ とする。$f(X)$の根の一つ$\alpha$
+ を添加した体を$E=F(\alpha)$としたとき$E/F$が$p$次Galois拡大となることを示そう。\\
+ まず、$\alpha$の最小多項式を$g(X)$とするとき、$g(X)=g(X+1)$となることを背理法で
+ 示す。$g(X)\ne g(X+1)$を仮定すると、$g(X),g(X+1),\cdots ,g(X+p-1)$は相異なる。
+ 実際、$g(X+i)=g(X+j)\quad (0\leqq i<j\leqq p-1)$となるなら、$g(X)=g(X+j-i)$
+ である。ここで、$(j-i)k+pl=1$となる$k,l$をとると、
+ \[g(X)=g(X+k(j-i))=g(X+1-pl)=g(X+1)\]
+  となるので矛盾が起きる。
+  また、$g(X),g(X+1),\cdots ,g(X+p-1)$は、それぞれ$f(X)$の根である$\alpha,\alpha +1,\cdots ,\alpha +p-1$
+  の最小多項式であるので、$f(X)=\prod _{i=0}^{p-1}g(X+i)$となることから、
+  $p=\deg f(X)=\sum _{i=0}^{p-1}\deg g(X+i)=p\deg g(X)$である。
+  これは、$\alpha\in F$を意味するが、$a\notin\{x^p-x\mid x\in F\}$に反するので
+  $g(X)=g(X+1)$が示された。\\
+  $g(X)$は相異なる$p$個の根$\alpha ,\alpha+1,\cdots ,\alpha +p-1$をもつので
+  $g(X)=f(X)\prod _{i=0}^{p-1}(X-i)$である。以上から、
+  $E/F$は$p$次Galois拡大である。したがって、
+  $\mathrm{Gal}(E/F)\cong \mathbb{Z}/p\mathbb{Z}$である。
+\end{example}
+\newpage
+\section{代数学の基本定理の証明}
+証明に使う命題をいくつか準備する。
+\begin{prop}\label{fact}
+  $\mathbb{R}$上の任意の奇数次数多項式は、$\mathbb{R}$内に根を持つ。
+\end{prop}
+\begin{proof}
+  中間値の定理から従う。
+\end{proof}
+補題として次の二つを示す。
+\begin{lemma}\label{kannzennsei}
+ 標数0の体$F$の任意の代数拡大は分離拡大である。
+\end{lemma}\label{nijikakudainohukanousei}
+\begin{proof}
+  $K$を$F$の代数拡大体とする。$\alpha\in K$の$F$上最小多項式を$f(X)$とする。
+  $F$の標数0だから$\mathrm{deg}\frac{df}{dX}(X)=\mathrm{deg}f(X)-1$となる。
+  $f(X)$が分離多項式でないなら、$f(X)$と$\frac{df}{dX}(X)$は共通根$\beta$を持つ。
+  これは、$f(X)$が$\beta$の最小多項式であることに矛盾するから、$f(X)$は分離多項式である。
+  したがって、$K/F$は分離拡大。
+\end{proof}
+\begin{remark}
+実数体$\mathbb{R}$は標数0である。Thm\ref{algethm}の証明では、$\mathbb{R}$のGalois拡大体
+を構成するが、Lem\ref{kannzennsei}によって分離性はただちに従うから正規性だけが問題になる。
+
+\end{remark}
+\begin{lemma}
+  複素数体$\mathbb{C}$は二次拡大体を持たない。
+\end{lemma}
+\begin{proof}
+$L$を$\mathbb{C}$の二次拡大体とする。
+このとき、$\forall\alpha\in L\setminus \mathbb{C}$はあるモニック二次多項式の根だから、
+解の公式から
+\[\alpha=\frac{a\pm \sqrt{b}}{2}\qquad(a,b\in\mathbb{C})\]
+と書ける。右辺は、$\mathbb{C}$の元だから、$L=\mathbb{C}$となる。
+これは、二次拡大であることに矛盾する。
+\end{proof}
+準備ができたので代数学の基本定理を証明する。
+\begin{proof}(Thm\ref{algethm}の証明)
+代数学の基本定理が成り立たないとすると、$\mathbb{C}$上の既約多項式$f(X)$で、
+次数が2以上のものがある。$K=\mathbb{C}[X]/(f(X))$とすれば、$K$は$\mathbb{C}$の有限次拡大
+であり、拡大次数は2以上である。 $\mathbb{C}$は$\mathbb{R}$の二次拡大体であるから、
+$K/\mathbb{R}$は有限次拡大である。Lem\ref{kannzennsei}より、$K/\mathbb{R}$
+は有限次分離拡大である。$K$の$\mathbf{R}$に関するGalois閉包を$\tilde{K}$とする。
+つまり、$K$の各元の$\mathbb{R}$上の共役元をすべて$\mathbb{R}$に添加した体とする。
+$K\subset\tilde{K}$であり、$\tilde{K}/\mathbb{R}$は有限次Galois拡大となる。このとき、
+$\tilde{K}/\mathbb{R}$の拡大次数が2のべきとなる。\\
+$[\tilde{K}:\mathbb{R}]=2^nm(m\mathrm{は奇数})$とおくとき、
+Thm\ref{sylow}よりGalois群$G$の部分群$H$で$|H|=2^n$となるものが取れる。
+$H$に対応する。中間体$M(\mathbb{R}\subset M\subset \tilde{K})$をとると、
+\[[M:\mathbb{R}]=\frac{[\tilde{K}:\mathbb{R}]}{[\tilde{K}:M]}
+                =\frac{|\mathrm{Gal}(\tilde{K}/\mathbb{R})|}{|\mathrm{Gal}(\tilde{K}/M)|}
+                \overset{\mathrm{Thm}\ref{tyuukanngal}}{=}\frac{|G|}{|H|}
+                =m\]
+$M=\mathbb{R}(\alpha)$なる$\alpha$をとると、$\alpha$の最小多項式$g(X)\in\mathbb{R}$
+の次数は$m$であるので、$g(X)$の既約性からProp\ref{fact}より、$m=1$でなくてはならない。
+よって$[\tilde{K}:\mathbb{R}]=2^n$となる。$[\tilde{K}:\mathbb{C}]$は
+$[\tilde{K}:\mathbb{R}]=2^n$の約数だから$[\tilde{K}:\mathbb{C}]=2^l,l>0$となる。
+Prop\ref{tyuukanngal}より、$\tilde{K}/\mathbb{C}$は有限次Galois拡大である。
+Galois群の位数は$2^l$だから、Prop\ref{pgrp}から、位数$2^{l-1}$の
+部分群$N\subset \mathrm{Gal}(\tilde{K}/\mathbb{C})$をとると、
+$N$に対応する$\tilde{K}/\mathbb{C}$中間体は$\mathbb{C}$の二次拡大体である。
+これは、$\mathbb{C}$の二次拡大体が存在しないことに矛盾するから、
+代数学の基本定理は成り立つ。
+\end{proof}
+\newpage
+\section{さいごに}
+Thm\ref{gal}は、有限次Galois拡大$K/F$の構造をGalois群が支配しているという
+群と体をつなぐ興味深い定理です。今回は、かなり抽象的に使ったが、Example\ref{ex1}のように
+具体的に与えられた体の拡大のGalois群を計算するのも面白いです。他にも、$\mathbb{Q}$
+に$\zeta _n=\exp (2\pi i/n)\in\mathbb{C}$を添加した体$\mathbb{Q}(\zeta_n)$
+を考えると$\mathbb{Q}(\zeta _n)/\mathbb{Q}$は、有限次Galois拡大になっていて
+Galois群が$\left(\mathbb{Z}/n\mathbb{Z}\right)^{\times}$に同型になること
+がよく知られています。(このような拡大を円分拡大といいます。)
+
+\begin{thebibliography}{10}
+ \bibitem{yukie1}
+ \newblock 雪江明彦,代数学1,日本評論社,2010
+ \bibitem{yukie2}
+ \newblock 雪江明彦,代数学2,日本評論社,2010
+ \bibitem{hujisai}
+ \newblock 藤崎源二郎,体とガロア理論,岩波書店,1991
+ \bibitem{artin}
+ \newblock E.Artin 訳寺田文行,ガロア理論入門,ちくま学芸文庫,2010
+\end{thebibliography}
+\end{document}

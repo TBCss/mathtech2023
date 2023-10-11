@@ -1,0 +1,613 @@
+\documentclass{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{here}
+\renewcommand{\figurename}{図}
+\title{射影平面}
+\author{あき}
+\date{}
+\usepackage[hyphens]{url}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\newcommand{\transposeprescript}[1]{\prescript{t}{}{#1}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}
+\newtheorem{prop}[theorem]{命題}
+\newtheorem{lemma}[theorem]{補題}
+\newtheorem{cor}[theorem]{系}
+\newtheorem{example}[theorem]{例}
+\newtheorem{definition}[theorem]{定義}
+\newtheorem{rem}[theorem]{注意}
+\newtheorem{guide}[theorem]{参考}
+
+\numberwithin{theorem}{section}
+\numberwithin{equation}{section}
+
+%
+% proof environment without \qed
+%
+\makeatletter
+%\renewenvironment{proof}[1][\proofname]{\par
+\newenvironment{Proof}[1][\Proofname]{\par
+  \normalfont
+  \topsep6\p@\@plus6\p@ \trivlist
+  \item[\hskip\labelsep{\bfseries #1}\@addpunct{\bfseries.}]\ignorespaces
+}{%
+  \endtrivlist
+}
+%\renewcommand{\proofname}{証明}
+%\renewcommand{\proofname}{Proof}
+\newcommand{\Proofname}{証明}
+%\newcommand{\Proofname}{Proof}
+\makeatother
+%
+% \qed
+%
+\makeatletter
+\def\BOXSYMBOL{\RIfM@\bgroup\else$\bgroup\aftergroup$\fi
+  \vcenter{\hrule\hbox{\vrule height.85em\kern.6em\vrule}\hrule}\egroup}
+\makeatother
+\newcommand{\BOX}{%
+  \ifmmode\else\leavevmode\unskip\penalty9999\hbox{}\nobreak\hfill\fi
+  \quad\hbox{\BOXSYMBOL}}
+%\renewcommand\qed{\BOX}
+\newcommand\QED{\BOX}
+
+\usepackage{bm}
+
+\newcommand{\parallelj}{/\!/}
+
+\begin{document}
+
+\maketitle
+ここでは$\mathbb{R}^2$でのデザルグの定理について考えた後，射影平面$\mathbb{P}^2$を構成し，そこでのデザルグの定理や射影平面における双対性にふれます．その後，複比を導入しパップスの定理を証明します．
+\\（注意）以下，直線を$AB$と表したとき，暗に$A\neq B$であると仮定しているとします．同様に2直線$l,m$が交わるまたは2直線$l,m$の交点といったとき，暗に$l\neq m$であると仮定しているとします．
+
+\section{$\mathbb{R}^2$でのデザルグの定理}
+まずは$\mathbb{R}^2$でのデザルグの定理を見てみましょう．主張は以下の通りです．
+
+\begin{theorem}[$\mathbb{R}^2$でのデザルグの定理]
+次の(1)から(4)が成り立つ．
+\\(1)平面$\mathbb{R}^2$上に$2$つの三角形$A_1 A_2 A_3$と$B_1 B_2 B_3$があって，$3$直線$A_i B_i\ (i=1,2,3)$が共点であるとする．2直線$A_2 A_3,B_2 B_3$の交点を$P_1$，2直線$A_1 A_3,B_1 B_3$の交点を$P_2$，2直線$A_1 A_2,B_1 B_2$の交点を$P_3$として，この3点が$\mathbb{R}^2$に存在するとき，3点$P_1$,$P_2$,$P_3$は共線となる．
+\\(2)平面$\mathbb{R}^2$上に2つの三角形$A_1 A_2 A_3$と$B_1 B_2 B_3$があって，$A_1 B_1\parallelj A_2 B_2\parallelj A_3 B_3$であるとする．2直線$A_2 A_3,B_2 B_3$の交点を$P_1$，2直線$A_1 A_3,B_1 B_3$の交点を$P_2$，2直線$A_1 A_2,B_1 B_2$の交点を$P_3$として，この3点が$\mathbb{R}^2$に存在するとき，$P_1$,$P_2$,$P_3$は共線となる．
+\\(3)平面$\mathbb{R}^2$上に2つの三角形$A_1 A_2 A_3$と$B_1 B_2 B_3$があって，3直線$A_i B_i (i=1,2,3)$が共点であるとする．さらに，$A_2 A_3\parallelj B_2 B_3$かつ$A_3 A_1\parallelj B_3 B_1$であるとき，$A_1 A_2\parallelj B_1 B_2$が成立する．
+\\(4)平面$\mathbb{R}^2$上に2つの三角形$A_1 A_2 A_3$と$B_1 B_2 B_3$があって，$A_1 B_1\parallelj A_2 B_2\parallelj A_3 B_3$であるとする．さらに，$A_2 A_3\parallelj B_2 B_3$かつ$A_3 A_1\parallelj B_3 B_1$であるとき，$A_1 A_2\parallelj B_1 B_2$が成立する．
+\end{theorem}
+\begin{figure}[ht]
+\centering  % 図を真ん中に配置
+\includegraphics[scale=0.455]{R^2dezaruku.png}
+\caption{定理1.1(1)}
+\end{figure}
+ここでは，定理1.1は証明しません．デザルグの定理は少しずつ異なる4つの命題からなりますが，(1)が本質的です．
+\par (1)と(2)を見比べてみると，「3直線$A_i B_i (i=1,2,3)$が共点である」と「$A_1 B_1\parallelj A_2 B_2\parallelj A_3 B_3$である」の部分のみ異なります．ここで$\mathbb{R}^2$の平行な直線たちはすべて無限の彼方にあるただ1点で交わると考えることにします．この点を無限遠点と呼びましょう．すると(2)は(1)の主張に含まれることになります．つまり(2)における3直線$A_1 B_1$,$A_2 B_2$,$A_3 B_3$は無限遠点において共点と考えられるようになったということです．
+\par 様々な向きの直線がその向きに対応する無限遠点を通るわけですが，その点たちが集まったものを無限遠直線と呼ぶことにしましょう．すると，すべての無限遠点は無限遠直線上にあり共線になります．これを踏まえて(1)と(3)を見比べてみましょう．「2直線$A_2 A_3,B_2 B_3$の交点を$P_1$，2直線$A_1 A_3,B_1 B_3$の交点を$P_2$，2直線$A_1 A_2,B_1 B_2$の交点を$P_3$とすれば，3点$P_1$,$P_2$,$P_3$は共線となる」が「$A_2 A_3\parallelj B_2 B_3$かつ$A_3 A_1\parallelj B_3 B_1$であるとき，$A_1 A_2\parallelj B_1 B_2$が成立する」の部分のみが異なります．無限遠直線の考え方を導入すると(3)は(1)に含まれることになります．つまり(3)において$A_2 A_3$と$B_2 B_3$の交点と$A_1 A_3$と$B_1 B_3$の交点は無限遠点にあるとき$A_1 A_2$と$B_1 B_2$の交点も無限遠点にあってこれらが共線であるということです．同様に(4)も(1)の主張に含まれることがわかります．
+
+\section{$\mathbb{P}^2$とその性質}
+
+第1節では無限遠の考え方を導入するとデザルグの定理がうまくまとまることがわかりました．しかし無限遠点に対応する$\mathbb{R}^2$の元は存在しません．そこで$\mathbb{P}^2$と表記される射影平面を構成して，その性質を調べてみます．
+\par $\mathbb{P}^2$は$\mathbb{R}^3$を用いて定義されます．$\mathbb{V}^3=\mathbb{R}^3\setminus\{\bm{0}\}$とします．
+\begin{definition}[$\mathbb{P}^2$の定義とその点]
+$\mathbb{V}^3$において，$\bm{u},\bm{v}(\in \mathbb{V}^3)$が0でない実数$\lambda$が存在して$\bm{u}=\lambda\bm{v}$を満たすことを$\bm{u}\sim \bm{v}$と定義すると，$\sim$は$\mathbb{V}^3$の同値関係となる．このとき$$\mathbb{P}^2=\mathbb{V}^3\slash{\sim}$$とする．そして$\mathbb{P}^2$の元を$\mathbb{P}^2$における点という．
+\end{definition}
+つまり$\mathbb{P}^2$の点は$\mathbb{R}^3$の原点を通る直線から原点を抜いたものになります．$\mathbb{P}^2$の任意の元$P$はあるベクトル$\bm{u}=\begin{pmatrix} x \\ y \\ z \end{pmatrix}(\in \mathbb{V}^3)$を含み，この$P$のことを$P[x,y,z]$や$P[\bm{u}]$や$[\bm{u}]$と表します．
+\par 次に$\mathbb{P}^2$における直線を$\mathbb{V}^3$の部分集合として定義します．
+\begin{definition}[$\mathbb{P}^2$における直線]
+ある$\mathbb{V}^3$のベクトル$\bm{v}=\begin{pmatrix}a\\b\\c \end{pmatrix}$を用いて表される
+$\mathbb{V}^3$の平面$\{(x,y,z)\in \mathbb{V}^3\mid ax+by+cz=0\}$は$\mathbb{P}^2$の部分集合であり，$\mathbb{P}^2$の直線という．
+\end{definition}
+つまり$\mathbb{P}^2$の直線は$\mathbb{R}^3$の原点を通る平面から原点を抜いたものになります．
+\par 直線$l$のことを$l\langle a,b,c\rangle $や$l\langle \bm{v}\rangle $や$\langle \bm{v}\rangle $と表すことにします．
+\par 定義2.2の中で$\mathbb{P}^2$の直線は$\mathbb{P}^2$の部分集合であるとありますが,これを確かめます．$\bm{u}\in\mathbb{V}^3$に対して，$\bm{u}$と同値な$\mathbb{V}^3$のベクトルたちはある0でない実数$\lambda$を用いて，$\lambda \bm{u}$と表されるが，$\bm{u}\in l\langle \bm{v}\rangle $であれば$\lambda\bm{u}\in l\langle \bm{v}\rangle $なので上での定義において直線は$\mathbb{P}^2$の部分集合であることがわかります．
+\par また，定義から明らかですが，$0$でない任意の実数$\lambda$ に対して，$$[\bm{u}]=[\lambda \bm{u}],\ \langle \bm{v} \rangle = \langle \lambda \bm{v} \rangle$$が成り立ちます．
+\vskip\baselineskip
+\par では第1節での無限遠点や無限遠直線は$\mathbb{P}^2$のどの元や部分集合に対応しているのでしょうか．$\mathbb{R}^3$における平面$\mathbb{R}^3_1 =\{(x,y,z)\in\mathbb{R}^3\mid z=1\}$として．$\mathbb{R}^3_1$と$\mathbb{P}^2$の点と直線（これらは$\mathbb{R}^3$における直線と平面に対応していることに注意してください.）の共有点を考えるとイメージがしやすいでしょう．
+\par $P[a,b,c]$について考えます．$c\neq 0$のとき$\mathbb{R}^3_1$と$P$の共有点は$(\frac{a}{c},\frac{b}{c},1)$となり，$c=0$のとき$\mathbb{R}^3_1$と$P$の共有点はありませんが，$(\frac{a}{c},\frac{b}{c},1)$で$c\to0$の極限を考えると$a$または$b$は0でないので，$(\frac{a}{c},\frac{b}{c},1)$は限りなく原点$O$から遠く離れたところへ行きます．つまり$P[a,b,0]$は無限遠点を表していると言えます．
+\par 次に$l\langle a,b,c\rangle $を考えてみましょう．$(a,b)\neq (0,0)$のとき$l$と$\mathbb{R}^3_1$の共通部分は，$\{ (x,y,z)\mid ax+by+c=0\} $となります．しかし$(a,b)=(0,0)$のときは，($a,b,c$のうち少なくとも1つは0でないので$c\neq 0$であることに注意してください．）$l$と$\mathbb{R}^3_1$の共通部分は空になりますが，無限遠点に対応する点たち，つまり$P[x,y,0]$なる点はこの直線$l$上にあります．よって$(a,b)=(0,0)$のとき$l$は無限遠直線を表していると言えます．
+\par 以上から無限遠直線や無限遠点に対応するものが$\mathbb{P}^2$の中にある事がわかりました．さらに興味深い性質が次の命題2.6や定理2.11に表れています．
+
+\begin{definition}[外積と内積]
+    $\mathbb{R}^3$の二つのベクトル$\bm{x},\bm{y}$に対して内積と外積を以下のように定める．
+    \par 内積：$\bm{x}\cdot\bm{y}=\transposeprescript{\bm{x}}\bm{y}$．
+    \par 外積：$\bm{x}\times\bm{y}=\transposeprescript{\left( \begin{vmatrix}
+        x_2&y_2\\x_3&y_3
+    \end{vmatrix},\begin{vmatrix}
+        x_3&y_3\\x_1&y_1
+    \end{vmatrix},\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}\right)}$．
+\end{definition}
+\begin{lemma}$\bm{x},\bm{y},\bm{z}\in\mathbb{R}^3$として，次の(1)(2)(3)(4)が成り立つ．
+\\(1)\quad 任意の実数$\lambda$に対し，$\lambda\bm{x}\times\bm{y}=\lambda(\bm{x}\times\bm{y})$．
+\\(2)\quad$(\bm{x}+\bm{y})\times\bm{z}=\bm{x}\times\bm{z}+\bm{y}\times\bm{z}$．
+\\(3)\quad$\bm{x}\times\bm{y}=-\bm{y}\times\bm{x}$．
+\\(4)\quad$\bm{x}\cdot(\bm{x}\times\bm{y})=\bm{y}\cdot(\bm{x}\times\bm{y})=0$．
+\end{lemma}
+\begin{proof}
+    (1)(2)(3)は定義から容易にわかる．(4)のみを示す．
+    \\$\bm{x}\cdot(\bm{x}\times\bm{y})
+    \\=x_1\begin{vmatrix}
+       x_2&y_2\\x_3&y_3 
+    \end{vmatrix}+x_2\begin{vmatrix}
+        x_3&y_3\\x_1&y_1
+    \end{vmatrix}+x_3\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}
+    \\=x_1\begin{vmatrix}
+       x_2&y_2\\x_3&y_3 
+    \end{vmatrix}-x_2\begin{vmatrix}
+        x_1&y_1\\x_3&y_3
+    \end{vmatrix}+x_3\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}
+    \\=\begin{vmatrix}
+        x_1&x_1&y_1
+        \\x_2&x_2&y_2
+        \\x_3&x_3&y_3
+    \end{vmatrix}=0$．
+    \par また$\\\bm{y}\cdot(\bm{x}\times\bm{y})
+    \\=-\bm{y}\cdot(\bm{y}\times\bm{x})=0$．
+\end{proof}
+\begin{lemma}
+$\mathbb{P}^2$の点$P[\bm{u}]$が$\mathbb{P}^2$の直線$l\langle \bm{v}\rangle $上にあることと$\bm{u}\cdot \bm{v}=0$であることは同値．
+\end{lemma}
+\begin{proof}
+$\bm{u}=\begin{pmatrix} A \\ B \\ C \end{pmatrix}$, $\bm{v}=\begin{pmatrix} a \\ b \\ c \end{pmatrix}$とする．
+\\$\mathbb{P}^2$の点$P[\bm{u}]$が$\mathbb{P}^2$の直線$l\langle \bm{v}\rangle $上にある．
+\\$\Leftrightarrow aA+bB+cC=0$．
+\\$\Leftrightarrow \bm{u}\cdot \bm{v}=0$．
+\end{proof}
+\begin{prop}[双対原理]
+$\bm{u},\bm{v}\in \mathbb{V}^3$とする．このとき次が成り立つ．
+$$ P[\bm{u}]\in q\langle \bm{v}\rangle \Leftrightarrow Q[\bm{v}]\in p\langle \bm{u}\rangle .$$
+\end{prop}
+\begin{proof}補題2.5を用いる．
+\\$P[\bm{u}]\in q\langle \bm{v}\rangle $
+$\Leftrightarrow \bm{u}\cdot \bm{v}=0$
+$\Leftrightarrow Q[\bm{v}]\in p\langle \bm{u}\rangle .$
+\end{proof}
+\begin{lemma}
+$\bm{u}_i =\begin{pmatrix} x_i \\ y_i \\ z_i \end{pmatrix}(\in \mathbb{V}^3)\ (i=1,2,3)$とする．このとき，次の(1)(2)(3)は同値である．
+\\(1)3点$[\bm{u}_i]\quad (i=1,2,3)$が共線である．
+\\(2)$\bm{u}_i\quad (i=1,2,3)$が一次従属．
+\\(3)$\bm{u}_1\cdot(\bm{u}_2\times\bm{u}_3)=0$.
+\end{lemma}
+\begin{proof}
+3点$[\bm{u}_i]\ (i=1,2,3)$が共線であることは，ある直線$l:ax+by+cz=0$が存在して，
+$$ax_i +by_i +cz_i =0 \quad (i=1,2,3)$$であるということなので，連立一次方程式
+$$\begin{pmatrix}
+    x_1 & y_1 & z_1 \\ x_2 & y_2 & z_2 \\ x_3 & y_3 & z_3
+\end{pmatrix}
+\begin{pmatrix}
+    a\\b\\c
+\end{pmatrix}=\bm{0} $$が$a,b,c$について非自明な解を持つことと同値である．（$a=b=c=0$とはならないことに注意．）これは$\begin{pmatrix}
+    x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \\ z_1 & z_2 & z_3
+\end{pmatrix}$が正則でないことと同値になり，一般に3次正方行列$A$が正則であることと，$A$を列ベクトル3つに分割したとき，その3つの列ベクトルが一次独立であることは同値なので，(1)$\Leftrightarrow$(2)を得る．
+\par また$\bm{u}_1\cdot(\bm{u}_2\times\bm{u}_3)=\begin{vmatrix}
+    x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \\ z_1 & z_2 & z_3
+\end{vmatrix}$であるから(2)$\Leftrightarrow$(3)もわかる．
+\end{proof}
+\begin{lemma}
+    $\bm{x},\bm{y}\ (\in \mathbb{V}^3)$とする．すると次の(1)(2)は同値である．
+    \\(1)$[\bm{x}]=[\bm{y}]$
+    \\(2)$\begin{vmatrix}
+        x_2&y_2\\x_3&y_3
+    \end{vmatrix}=\begin{vmatrix}
+        x_3&y_3\\x_1&y_1
+    \end{vmatrix}=\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}=0$
+\end{lemma}
+\begin{proof}
+    $(1)\Rightarrow(2)$について，
+    $\bm{x}\sim\bm{y}$より$\bm{y}=\lambda\bm{x}$なる実数$\lambda$が存在するので，
+    $$\begin{vmatrix}
+        x_i&y_i\\x_j&y_j
+    \end{vmatrix}=\begin{vmatrix}
+        x_i&\lambda x_i\\x_j&\lambda x_j
+    \end{vmatrix}=0.$$
+    \par $(2)\Rightarrow(1)$について，背理法で示す．$[\bm{x}]\neq [\bm{y}]$と仮定する．すると$\bm{x}\nsim\bm{y}$より$\bm{x},\bm{y}$は一次独立．$\mathbb{V}^3$のベクトル$\bm{u}$を$\bm{x},\bm{y},\bm{u}$が一次独立になるようにとることができる．$\bm{u}=\begin{pmatrix}
+        x\\y\\z
+    \end{pmatrix}$としておく．(2)より
+    $$\begin{vmatrix}
+        x&x_1&y_1
+        \\y&x_2&y_2
+        \\z&x_3&y_3
+    \end{vmatrix}=x\begin{vmatrix}
+       x_2&y_2\\x_3&y_3 
+    \end{vmatrix}+y\begin{vmatrix}
+        x_3&y_3\\x_1&y_1
+    \end{vmatrix}+z\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}=0$$となるが，$\bm{x},\bm{y},\bm{u}$が一次独立なので，$\begin{vmatrix}
+        x&x_1&y_1
+        \\y&x_2&y_2
+        \\z&x_3&y_3
+    \end{vmatrix}\neq 0$に矛盾．
+\end{proof}
+\begin{cor}
+    $\mathbb{P}^2$の異なる2点$[\bm{x}],[\bm{y}]$をとる．すると$\bm{x}\times\bm{y}\in\mathbb{V}^3$である．
+\end{cor}
+\begin{proof}
+    補題2.8から$[\bm{x}]\neq[\bm{y}]$は$\begin{vmatrix}
+        x_2&y_2\\x_3&y_3
+    \end{vmatrix},\begin{vmatrix}
+        x_3&y_3\\x_1&y_1
+    \end{vmatrix},\begin{vmatrix}
+        x_1&y_1\\x_2&y_2
+    \end{vmatrix}$のうち少なくとも1つが0でないことと同値．よって$\bm{x}\times\bm{y}\neq\bm{0}$
+\end{proof}
+\begin{lemma}
+    $\bm{x},\bm{y}$を$\mathbb{V}^3$のベクトルとする．すると次の(1)(2)は同値である．
+    \\(1)$[\bm{x}]=[\bm{y}]$
+    \\(2)$\langle\bm{x}\rangle=\langle\bm{y}\rangle$
+\end{lemma}
+\begin{proof}まず，異なる2点$[\bm{u}],[\bm{v}]$について$[\bm{u}]$は通るが$[\bm{v}]$は通らないような直線が存在することを示す．そのような直線を$\langle\bm{v}-(\bm{u}\cdot\bm{v}/\bm{u}\cdot\bm{u})\bm{u}\rangle$とすればいい．まず$\bm{v}-(\bm{u}\cdot\bm{v}/\bm{u}\cdot\bm{u})\bm{u}$は$\bm{0}$でない．もし$\bm{0}$なら$\bm{u},\bm{v}$が一次独立であることに矛盾するからである．また$\bm{u}\cdot(\bm{v}-(\bm{u}\cdot\bm{v}/\bm{u}\cdot\bm{u})\bm{u})=0$であり，$\bm{u},\bm{v}$が一次独立であることとコーシーシュワルツの不等式から$\bm{v}\cdot(\bm{v}-(\bm{u}\cdot\bm{v}/\bm{u}\cdot\bm{u})\bm{u})>0$であり，補題2.5よりこの直線は目的の性質を満たす．
+\par 最後に命題2.6（双対原理）を用いる．
+    \\ \quad$[\bm{x}]=[\bm{y}].\\\Leftrightarrow$任意の直線$l$に対して$([\bm{x}]\in l\Leftrightarrow[\bm{y}]\in l)$が成り立つ．$\\\Leftrightarrow$任意の点$L$に対して$(L\in\langle\bm{x}\rangle\Leftrightarrow L\in\langle\bm{y}\rangle)$が成り立つ．$\\\Leftrightarrow \langle\bm{x}\rangle=\langle\bm{y}\rangle.$
+    
+\end{proof}
+
+\begin{theorem}次の(1),(2)が成り立つ．
+\\(1)$\mathbb{P}^2$の異なる$P_1[\bm{u}],P_2[\bm{v}]$を通る直線が存在して，一意に定まる．そしてその直線は$l\langle\bm{u}\times\bm{v}\rangle$である．
+\\(2)$\mathbb{P}^2$の異なる2直線$p_1\langle\bm{u}\rangle,p_2\langle\bm{v}\rangle$は，それらの共有点が存在して一意に定まる．そしてその点は$L[\bm{u}\times\bm{v}]$である．
+\end{theorem}
+\begin{proof}
+(1)を先に考える．
+\par 補題2.4より$\bm{u}\cdot(\bm{u}\times\bm{v})=\bm{v}\cdot(\bm{u}\times\bm{v})=0$であり，補題2.5より$\langle\bm{u}\times\bm{v}\rangle$は$[\bm{u}],[\bm{v}]$を通る．
+\par 次に一意性を示す．$l'$も$P_1,P_2$を通るとする．このとき$l'$上の任意の点$P'[\bm{w}]$について補題2.7より
+$$\bm{w}\cdot(\bm{u}\times\bm{v})=0$$
+となる．よって補題2.5より$P'\in l\langle\bm{u}\times\bm{v}\rangle$なので$l'\subset l$．定義2.2より，$l$に含まれうる直線は$l$だけなので$l=l'$．
+\par (2)は(1)と双対原理よりわかる．
+\end{proof}
+$\mathbb{P}^2$における双対性とは点と直線が「裏返し」の関係にあって互いに移りあう対称性を持つ性質のことを指します．そして命題2.6や定理2.11のような，射影平面における点と直線の対称性がのちに説明する射影平面の双対性につながります．また$\mathbb{P}^2$は定理2.11が成り立つように作ったものとも言えるでしょう．
+\par また定理2.11の事柄は$\mathbb{R}^2$にはない性質です．(2)において異なる平行な2直線をとる事が反例になります．
+\begin{lemma}
+$P_1 [\bm{u}_1],P_2 [\bm{u}_2]$を$\mathbb{P}^2$の異なる2点とする．このとき，$\mathbb{P}^2$の任意の点$P [\bm{u}]$に対して，次の(1)(2)は同値である．
+\\(1)$P$は直線$P_1 P_2$上の点である．
+\\(2)$\bm{u}$は$\bm{u}_1$と$\bm{u}_2$の一次結合として一意に表される．
+\end{lemma}
+\begin{proof}
+補題2.7を用いる．$\bm{u}_1,\bm{u}_2$は一次独立であることに注意する．
+\\$P$は直線$P_1 P_2$上の点である．
+\\$\Leftrightarrow$3点$P,P_1 ,P_2$は共線．
+\\$\Leftrightarrow$ $\bm{u},\bm{u}_1,\bm{u}_2$は一次従属．
+\par ここで$\bm{u}_1,\bm{u}_2$は一次独立であるから$\bm{u}$は$\bm{u}_1$と$\bm{u}_2$の一次結合として一意に表される．逆にこのとき明らかに$\bm{u},\bm{u}_1,\bm{u}_2$は一次従属である．
+\end{proof}
+\section{$\mathbb{P}^2$でのデザルグの定理と双対定理}
+デザルグは17世紀フランスの人物で，数学者でもあり建築家でもありました．
+\par $\mathbb{P}^2$ではデザルグの定理の主張は端的に表されます．
+\begin{theorem}[$\mathbb{P}^2$でのデザルグの定理]
+平面$\mathbb{P}^2$上に$2$つの共線でない点の組$A_1 ,A_2 ,A_3$と$B_1 ,B_2 ,B_3$があって，$3$直線$A_i B_i (i=1,2,3)$が共点であるとする．$2$直線$A_2 A_3$，$B_2 B_3$の交点を$P_1$，$2$直線$A_1 A_3$，$B_1 B_3$の交点を$P_2$，$2$直線$A_1 A_2$，$B_1 B_2$の交点を$P_3$とすれば，$3$点$P_1$,$P_2$,$P_3$は共線となる．
+\end{theorem}
+\begin{proof}
+3直線$A_i B_i$の交点を$S[\bm{s}]$とし，$A_i [\bm{a}_i],B_i [\bm{b}_i]\ (i=1,2,3)$とすると，補題2.12より$\bm{s}$は$\bm{a_i},\bm{b_i}$の一次結合で表せるので，
+$$\bm{s}=\lambda_i \bm{a}_i+\mu_i \bm{b}_i\quad (i=1,2,3)$$
+なる実数$\lambda_i ,\mu_i$が存在する．
+このとき，$\lambda_2 \bm{a}_2+\mu_2 \bm{b}_2=\lambda_3 \bm{a}_3+\mu_3 \bm{b}_3$だから，
+$$\lambda_2 \bm{a}_2-\lambda_3 \bm{a}_3=-\mu_2 \bm{b}_2+\mu_3 \bm{b}_3$$
+よって，
+\begin{equation}[\lambda_2 \bm{a}_2-\lambda_3 \bm{a}_3]=[\mu_2 \bm{b}_2-\mu_3 \bm{b}_3].\end{equation}
+補題2.12より式(3.1)の左辺は，直線$A_2 A_3$上にあり，右辺は直線$B_2 B_3$上にあるから，上式の両辺は$2$直線$A_2 A_3$，$B_2 B_3$の交点$P_1$を表している．$P_2$,$P_3$でも同様に考えると，
+$$P_1 =[\lambda_2 \bm{a}_2-\lambda_3 \bm{a}_3],\ P_2 =[\lambda_3 \bm{a}_3-\lambda_1 \bm{a}_1],\ P_3 =[\lambda_1 \bm{a}_1-\lambda_2 \bm{a}_2]$$
+を得る．このとき
+$$(\lambda_2 \bm{a}_2-\lambda_3 \bm{a}_3)+(\lambda_3 \bm{a}_3-\lambda_1 \bm{a}_1)+(\lambda_1 \bm{a}_1-\lambda_2 \bm{a}_2)=\bm{0}$$
+だから3つのベクトル$(\lambda_2 \bm{a}_2-\lambda_3 \bm{a}_3),(\lambda_3 \bm{a}_3-\lambda_1 \bm{a}_1),(\lambda_1 \bm{a}_1-\lambda_2 \bm{a}_2)$は一次従属である．ゆえに補題2.7より$3$点$P_1$,$P_2$,$P_3$は共線となる．
+\end{proof}
+射影平面$\mathbb{P}^2$においてデザルグの定理は成り立つのがわかりましたが，さらに興味深いことがわかります．デザルグの定理を例に見てみましょう．
+\par 一般に射影平面上の点と直線のみに関する命題について，(直線の長さや角度には関わらないような命題．そもそも射影平面においてそれらは定義していない．)「点」と「直線」，またそれらに関する文言をすべて入れ替えた命題を双対命題といいます．双対命題の双対は元の命題と等しくなります．のちに説明しますが，どんな命題もその双対の真偽が一致し，どんな定義も妥当な定義であればその双対も妥当な定義となります．例えばデザルグの定理の双対定理は次のようになります．
+\begin{theorem}[デザルグの定理の双対定理]
+$\mathbb{P}^2$上に2つの共点でない直線の組$a_1,a_2,a_3$と$b_1,b_2,b_3$があって，$a_i$と$b_i \ (i=1,2,3)$の3つの交点が共線であるとする．
+$a_2,a_3$の交点を$U_1$，$b_2,b_3$の交点を$V_1$，$a_3,a_1$の交点を$U_2$，$b_3,b_1$の交点を$V_2$，$a_1,a_2$の交点を$U_3$，$b_1,b_2$の交点を$V_3$として，直線$U_i V_i$を$p_i \ (i=1,2,3)$とする．
+このとき，3直線$p_1,p_2,p_3$が共点である．
+\end{theorem}
+$\mathbb{P}^2$での命題がその双対と真偽が一致することは定理2.11から説明できます．「異なる2点からただ1つの直線が定まる」のと「異なる2直線からただ1点が定まる」といった2つの主張からわかるように，点と直線の間に対称性があるのがわかります．そして「点と直線に関する命題」はその双対の「直線と点に関する命題」と等価になります．イメージとしては点にも直線にもなりうるようなモノが2つあって，それらが互いにいろいろな関係で結びついています．そして2つのうち片方を点とすれば，もう片方が自動的に直線になり，2つのモノの関係が「点と直線の関係」として浮かびあがるような感じになります．もし先ほど点として考えたほうのモノを直線として考えていれば「直線と点の関係」が出てくるはずでした．
+\par これでは狐につままれたような感覚になると思うので別の説明を書いておきます．$\mathbb{P}^2$とは別にもう1つの射影平面$\check{\mathbb{P}^2}$を作って考えてみましょう．そして$\bm{u},\bm{v}\in \mathbb{V}^3$として$\mathbb{P}^2$の点$[\bm{u}]$を$\check{\mathbb{P}^2}$の直線$\langle \bm{u} \rangle$に対応させる写像を$\mathscr{Z}$とします．すると$\mathscr{Z}$は$\mathbb{P}^2$から$\check{\mathbb{P}^2}$の直線全体への全単射となっています．また$\mathbb{P}^2$の直線全体から$\check{\mathbb{P}^2}$の点全体への全単射を同様に作り，それを$\check{\mathscr{Z}}$とします．そして命題2.6(双対原理)より，
+$$[\bm{u}]\in \langle \bm{v} \rangle \Rightarrow \mathscr{Z}([\bm{u}])\ni \check{\mathscr{Z}}(\langle \bm{v} \rangle)$$
+となります．すると，$\mathbb{P}^2$での命題は双対原理と写像$\mathscr{Z},\ \check{\mathscr{Z}}$によって，$\check{\mathbb{P}^2}$において元の命題の双対に訳されています．これが射影平面において，どんな命題もその双対命題と真偽が一致することの根拠になります．
+\par またデザルグの定理の逆も成り立ちます．
+\begin{theorem}[$\mathbb{P}^2$でのデザルグの定理の逆]
+平面$\mathbb{P}^2$上に$2$つの共線でない点の組$A_1 ,A_2 ,A_3$と$B_1 ,B_2 ,B_3$があって，$2$直線$A_2 A_3$，$B_2 B_3$の交点を$P_1$，$2$直線$A_1 A_3$，$B_1 B_3$の交点を$P_2$，$2$直線$A_1 A_2$，$B_1 B_2$の交点を$P_3$として，$3$点$P_1$,$P_2$,$P_3$は共線となっているとする．このとき，$3$直線$A_i B_i (i=1,2,3)$が共点である．
+\end{theorem}
+\begin{proof}
+定理3.2の$U_i,V_i$をこの定理における$A_i,B_i$とすればよい．$A_1 ,A_2 ,A_3$と$B_1 ,B_2 ,B_3$が共線でないことから，定理3.2で$a_1,a_2,a_3$と$b_1,b_2,b_3$にあたる2つの直線の組は共点でない．よって定理3.2を用いて，$3$直線$A_i B_i (i=1,2,3)$が共点であることが示せる．
+\end{proof}
+定理3.3の証明からわかるようにデザルグの定理はその双対定理と逆定理の主張が等価になっていて，このような性質を自己双対性といいます．
+\section{複比}
+0でない実数$\lambda,\mu$について比を次のように定義します．比が負の値もとりうることに注意してください．
+$$\lambda: \mu =\lambda/\mu.$$
+\par 射影平面において複比を導入します．well-defined性の確認は後回しにして複比の定義を見てみましょう．
+\begin{definition}[複比]
+$\mathbb{P}^2$における直線$l$において共線な相異なる4点$A_i[\bm{a}_i]\ (i=1,2,3,4)$について，$l$上の相異なる2点$P[\bm{u}],Q[\bm{v}]$を選べば，補題2.12よりある実数$\alpha_i,\ \beta_i \ (i=1,2,3,4)$が一意に存在して，
+$$\bm{a}_i=\alpha_i \bm{u}+ \beta_i \bm{v}$$
+を満たす．このとき，4点$A_i$の複比$R(A_1,A_2,A_3,A_4)$を次のように定義する．
+$$R(A_1,A_2,A_3,A_4)=\frac{\begin{vmatrix}
+\alpha_3 & \alpha_1
+\\ \beta_3 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+    \alpha_3 & \alpha_2
+\\ \beta_3 & \beta_2
+\end{vmatrix}}:\frac{\begin{vmatrix}
+    \alpha_4 & \alpha_1
+\\ \beta_4 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+   \alpha_4 & \alpha_2
+\\ \beta_4 & \beta_2
+\end{vmatrix}}=\frac{(\alpha_3 \beta_1 -\alpha_1 \beta_3)(\alpha_4 \beta_2 -\alpha_2 \beta_4)}{(\alpha_3 \beta_2 -\alpha_2 \beta_3)(\alpha_4 \beta_1 -\alpha_1 \beta_4)}.$$
+\end{definition}
+まず$\begin{vmatrix}
+   \alpha_i & \alpha_j
+\\ \beta_i & \beta_j
+\end{vmatrix}\ (i \neq j)$が0でないことを確認します．
+\begin{proof}
+    $\begin{vmatrix}
+   \alpha_i & \alpha_j
+\\ \beta_i & \beta_j
+\end{vmatrix}=\alpha_i \beta_j -\alpha_j \beta_i=0$と仮定して矛盾を導く．
+$$\beta_j \bm{a}_i=\beta_j(\alpha_i \bm{u}+ \beta_i \bm{v})=\alpha_i \beta_j \bm{u}+ \beta_i \beta_j \bm{v}=\alpha_j \beta_i \bm{u}+ \beta_i \beta_j \bm{v}=\beta_i(\alpha_j \bm{u}+ \beta_j \bm{v})=\beta_i \bm{a}_j$$
+となるが，ここで$\beta_i=\beta_j=0$だと$\bm{a}_i=\alpha_i \bm{u},\ \bm{a}_j=\alpha_j \bm{u}$より$[\bm{a}_i]=[\bm{a}_j]$となって$A_i \neq A_j$に矛盾．
+\par よって$\beta_i$または$\beta_j$は0でない．$\bm{a}_i$も$\bm{a}_j$も$\bm{0}$でないから，$\beta_i$も$\beta_j$も0でない．ゆえに$[\bm{a}_i]=[\bm{a}_j]$より$A_i \neq A_j$に矛盾．
+\par 以上より$\begin{vmatrix}
+   \alpha_i & \alpha_j
+\\ \beta_i & \beta_j
+\end{vmatrix}\neq 0$．
+\end{proof}
+次に点列の複比が$A_i$や基準点$P,Q$の代表元のとり方によらないことを示します．
+\begin{proof}
+$$A_i=[k_i \bm{a}_i],\ P=[s\bm{u}],\ Q=[t\bm{v}] \ (k_i \neq 0,\ s\neq 0,\ t\neq 0)$$
+とする．$\bm{a}_i=\alpha_i \bm{u}+ \beta_i \bm{v}$なので，
+$$k_i \bm{a}_i=\frac{k_i \alpha_i}{s} (s\bm{u})+ \frac{k_i \beta_i}{t} (t\bm{v})$$
+より，$\alpha'_i=\frac{k_i \alpha_i}{s},\ \beta'_i=\frac{k_i \beta_i}{t}$とすれば，
+$$\frac{\begin{vmatrix}
+\alpha_3' & \alpha_1'
+\\ \beta_3' & \beta_1'
+\end{vmatrix}}{\begin{vmatrix}
+    \alpha_3' & \alpha_2'
+\\ \beta_3' & \beta_2'
+\end{vmatrix}}:\frac{\begin{vmatrix}
+    \alpha_4' & \alpha_1'
+\\ \beta_4' & \beta_1'
+\end{vmatrix}}{\begin{vmatrix}
+   \alpha_4' & \alpha_2'
+\\ \beta_4' & \beta_2'
+\end{vmatrix}}=\frac{\frac{k_1k_3}{st}\begin{vmatrix}
+\alpha_3 & \alpha_1
+\\ \beta_3 & \beta_1
+\end{vmatrix}}{\frac{k_2k_3}{st}\begin{vmatrix}
+    \alpha_3 & \alpha_2
+\\ \beta_3 & \beta_2
+\end{vmatrix}}:\frac{\frac{k_1k_4}{st}\begin{vmatrix}
+    \alpha_4 & \alpha_1
+\\ \beta_4 & \beta_1
+\end{vmatrix}}{\frac{k_2k_4}{st}\begin{vmatrix}
+   \alpha_4 & \alpha_2
+\\ \beta_4 & \beta_2
+\end{vmatrix}}=\frac{\begin{vmatrix}
+\alpha_3 & \alpha_1
+\\ \beta_3 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+    \alpha_3 & \alpha_2
+\\ \beta_3 & \beta_2
+\end{vmatrix}}:\frac{\begin{vmatrix}
+    \alpha_4 & \alpha_1
+\\ \beta_4 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+   \alpha_4 & \alpha_2
+\\ \beta_4 & \beta_2
+\end{vmatrix}}.$$
+よって複比は$A_i$や基準点$P,Q$の代表元のとり方によらない．
+\end{proof}
+最後に複比が基準点$P,Q$の選び方によらないことを示します．
+\begin{proof}
+新たに基準点$P'[\bm{u}'],Q'[\bm{v}']\in l\ (P'\neq Q')$を選ぶ．そして補題2.12より
+$$\bm{a}_i=\alpha_i' \bm{u}'+ \beta_i' \bm{v}'$$なる実数$\alpha'_i,\beta'_i$が一意に存在する．また補題2.12より実数$a,b,c,d$が一意に存在して
+$$\bm{u}'=a\bm{u}+b\bm{v},\ \bm{v}'=c\bm{u}+d\bm{v}$$
+を満たす．よって$A=\begin{pmatrix}
+    a & c
+    \\b & d
+\end{pmatrix}$とすれば
+$$(\bm{u}',\bm{v}')=(\bm{u},\bm{v})A$$
+となり，$\bm{u}',\bm{v}'$と$\bm{u},\bm{v}$は1次独立だから$A$は正則で逆行列$A^{-1}$が存在する．そして
+\begin{align*}
+ \bm{a}_i&=\alpha_i' \bm{u}'+ \beta_i' \bm{v}'\\
+ &=\alpha_i' (a\bm{u}+b\bm{v})+ \beta_i' (c\bm{u}+d\bm{v})\\
+ &=(\alpha_i'a+\beta_i'c)\bm{u}+(\alpha_i'b+\beta_i'd)\bm{v} .   
+\end{align*}
+$\bm{u},\bm{v}$は1次独立だから，$\bm{a}_i=\alpha_i \bm{u}+ \beta_i \bm{v}$より
+$$\begin{pmatrix}
+    \alpha_i \\ \beta_i
+\end{pmatrix}=
+\begin{pmatrix}
+    a & c \\
+    b & d
+\end{pmatrix}
+\begin{pmatrix}
+    \alpha_i' \\ \beta_i'
+\end{pmatrix}=A\begin{pmatrix}
+    \alpha_i' \\ \beta_i'
+\end{pmatrix}$$
+よって$\begin{pmatrix}
+    \alpha_i' \\ \beta_i'
+\end{pmatrix}=A^{-1}\begin{pmatrix}
+    \alpha_i \\ \beta_i
+\end{pmatrix}$なので,
+$\begin{pmatrix}
+    \alpha_i' & \alpha'_j
+    \\ \beta_i' & \beta_j'
+\end{pmatrix}=A^{-1}\begin{pmatrix}
+   \alpha_i & \alpha_j
+\\ \beta_i & \beta_j
+\end{pmatrix}$である.
+ゆえに$\begin{vmatrix}
+    \alpha_i' & \alpha_j'
+    \\ \beta_i' & \beta_j'
+\end{vmatrix}=|A^{-1}|\begin{vmatrix}
+   \alpha_i & \alpha_j
+\\ \beta_i & \beta_j
+\end{vmatrix}$より，$|A^{-1}|\neq 0$に注意して
+$$\frac{\begin{vmatrix}
+\alpha_3' & \alpha_1'
+\\ \beta_3' & \beta_1'
+\end{vmatrix}}{\begin{vmatrix}
+    \alpha_3' & \alpha_2'
+\\ \beta_3' & \beta_2'
+\end{vmatrix}}:\frac{\begin{vmatrix}
+    \alpha_4' & \alpha_1'
+\\ \beta_4' & \beta_1'
+\end{vmatrix}}{\begin{vmatrix}
+   \alpha_4' & \alpha_2'
+\\ \beta_4' & \beta_2'
+\end{vmatrix}}=\frac{|A^{-1}|\begin{vmatrix}
+\alpha_3 & \alpha_1
+\\ \beta_3 & \beta_1
+\end{vmatrix}}{|A^{-1}|\begin{vmatrix}
+    \alpha_3 & \alpha_2
+\\ \beta_3 & \beta_2
+\end{vmatrix}}:\frac{|A^{-1}|\begin{vmatrix}
+    \alpha_4 & \alpha_1
+\\ \beta_4 & \beta_1
+\end{vmatrix}}{|A^{-1}|\begin{vmatrix}
+   \alpha_4 & \alpha_2
+\\ \beta_4 & \beta_2
+\end{vmatrix}}=\frac{\begin{vmatrix}
+\alpha_3 & \alpha_1
+\\ \beta_3 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+    \alpha_3 & \alpha_2
+\\ \beta_3 & \beta_2
+\end{vmatrix}}:\frac{\begin{vmatrix}
+    \alpha_4 & \alpha_1
+\\ \beta_4 & \beta_1
+\end{vmatrix}}{\begin{vmatrix}
+   \alpha_4 & \alpha_2
+\\ \beta_4 & \beta_2
+\end{vmatrix}}.$$
+\par よって複比は基準点の選び方によらない．
+\end{proof}
+以上より複比の定義が妥当なものであるとわかります．
+\begin{lemma}
+    $\mathbb{P}^2$において共線な相異なる4点$A_i[\bm{a}_i]\ (i=1,2,3,4)$に対して，
+    $$\bm{a}_3=\lambda\bm{a}_1+\mu\bm{a}_2,\ \bm{a}_4=\lambda'\bm{a}_1+\mu'\bm{a}_2$$
+    なる実数$\lambda,\lambda',\mu,\mu'$が一意に存在する．（補題2.12）4点$A_i$は相異なるのだから$\lambda,\lambda',\mu,\mu'$はすべて0でないことに注意すると，この点列の複比は
+    $$R(A_1,A_2,A_3,A_4)=\frac{\mu}{\lambda}:\frac{\mu'}{\lambda'}=\frac{\lambda'\mu}{\lambda\mu'}$$となる．
+\end{lemma}
+\begin{proof}
+    点列の複比は基準点によらないのだから，基準点を$A_1,A_2$にとる．このとき，
+    $$\bm{a}_1=1\bm{a}_1+0\bm{a}_2,\ \bm{a}_2=0\bm{a}_1+1\bm{a}_2$$
+    となるので，
+    $$R(A_1,A_2,A_3,A_4)=\frac{\begin{vmatrix}
+        \lambda & 1 \\
+        \mu & 0
+    \end{vmatrix}}{\begin{vmatrix}
+       \lambda & 0 \\
+        \mu & 1 
+    \end{vmatrix}}:\frac{\begin{vmatrix}
+        \lambda' & 1 \\
+        \mu' & 0
+    \end{vmatrix}}{\begin{vmatrix}
+       \lambda' & 0 \\
+        \mu' & 1 
+    \end{vmatrix}}=\frac{\mu}{\lambda}:\frac{\mu'}{\lambda'}=\frac{\lambda'\mu}{\lambda\mu'}.$$
+\end{proof}
+\par $\mathbb{P}^2$において点$S$において共点な相異なる4直線$l_i\langle \bm{u}_i\rangle \ (i=1,2,3,4)$を$S$を中心とする線束といって，定義4.1と双対的に線束の複比を定義できます．
+\begin{definition}[線束の複比]
+$\mathbb{P}^2$の線束$l_i\langle \bm{u}_i\rangle \ (i=1,2,3,4)$について，命題2.6より$[\bm{u}_i]\ (i=1,2,3,4)$は共線である．このとき線束の複比$R(l_1,l_2,l_3,l_4)$を次のように定義する．
+$$R(l_1,l_2,l_3,l_4)=R([\bm{u}_1],[\bm{u}_2],[\bm{u}_3],[\bm{u}_4])$$
+\end{definition}
+上の定義において4直線$l_i\langle \bm{u}_i\rangle \ (i=1,2,3,4)$が相異なる事から4点$[\bm{u}_i]$も相異なることがわかります．（補題2.10）また，線束の複比が直線の代表元のとり方によらないことは明らかです．
+\begin{prop}
+    $\mathbb{P}^2$の線束$l_i\ (i=1,2,3,4)$とその線束の中心を通らないような直線$m$が与えられたとする．さらに$l_i$と$m$の交点を$A_i$とすれば，$i\neq j$のとき$A_i\neq A_j$であり次の式が成立する．
+    $$R(l_1,l_2,l_3,l_4)=R(A_1,A_2,A_3,A_4)$$
+\end{prop}
+\begin{proof}
+    $l_i=\langle\bm{u}_i\rangle$とする．このとき命題2.6(双対原理)から4点$[\bm{u}_i]$は共線である．補題2.12より
+    $$\bm{u}_3=\lambda\bm{u}_1+\mu\bm{u}_2,\ \bm{u}_4=\lambda'\bm{u}_1+\mu'\bm{u}_2$$
+    を満たす実数たち$\lambda,\lambda',\mu,\mu'$が一意に存在する．このとき補題4.2より
+    $$R(l_1,l_2,l_3,l_4)=R([\bm{u}_1],[\bm{u}_2],[\bm{u}_3],[\bm{u}_4])=\frac{\lambda'\mu}{\lambda\mu'}$$となる．
+    \\次に$m=\langle\bm{a}\rangle$とする．$\bm{a}_i=\bm{u}_i\times\bm{a}$とすれば$A_i=[\bm{a}_i]$となって，
+    \begin{eqnarray*}
+        \bm{a}_3&=&\bm{u}_3\times\bm{a}\\
+        &=&(\lambda\bm{u}_1+\mu\bm{u}_2)\times\bm{a}\\
+        &=&\lambda(\bm{u}_1\times\bm{a})+\mu(\bm{u}_2\times\bm{a})\\
+        &=&\lambda\bm{a}_1+\mu\bm{a}_2
+    \end{eqnarray*}となり，同様に$\bm{a}_4=\lambda'\bm{a}_1+\mu'\bm{a}_2$．
+    よって補題4.2より，
+    $$R(A_1,A_2,A_3,A_4)=\frac{\lambda'\mu}{\lambda\mu'}=R(l_1,l_2,l_3,l_4).$$
+\end{proof}
+\begin{cor}
+    $\mathbb{P}^2$の線束$l_i\ (i=1,2,3,4)$と，この線束の中心を通らない任意の2直線$m,m'$が与えられ，$l_i$と$m$の交点を$A_i$，$l_i$と$m'$の交点を$A_i'$とすれば次の式が成り立つ．
+    $$R(A_1,A_2,A_3,A_4)=R(A_1',A_2',A_3',A_4').$$
+\end{cor}
+\begin{proof}
+    命題4.4より
+    $$R(A_1,A_2,A_3,A_4)=R(l_1,l_2,l_3,l_4)=R(A_1',A_2',A_3',A_4').$$
+\end{proof}
+\begin{prop}
+    $\mathbb{P}^2$の直線$l$上に相異なる3点$A_i\ (i=1,2,3)$とそれら3点とは異なる$l$上の2点$A_4,A_5$について，
+    $$R(A_1,A_2,A_3,A_4)=R(A_1,A_2,A_3,A_5)$$
+    が成り立つならば$A_4=A_5$．
+\end{prop}
+\begin{proof}
+    $A_i=[\bm{a}_i]\ (i=1,2,3,4,5)$とする．補題2.12よりある0でない実数たち$\lambda,\lambda',\lambda'',\mu,\mu',\mu''$が一意に存在して，
+    $$\bm{a}_3=\lambda\bm{a}_1+\mu\bm{a}_2\quad\bm{a}_4=\lambda'\bm{a}_1+\mu'\bm{a}_2\quad\bm{a}_5=\lambda''\bm{a}_1+\mu''\bm{a}_2$$となる．$R(A_1,A_2,A_3,A_4)=R(A_1,A_2,A_3,A_5)$と補題4.2より$$\frac{\lambda'\mu}{\lambda\mu'}=\frac{\lambda''\mu}{\lambda\mu''}\quad\text{なので}\quad\frac{\lambda''}{\lambda'}=\frac{\mu''}{\mu'}$$となりこれを$k$とすれば，（$k\neq0$に注意する．）
+    \begin{eqnarray*}
+        \bm{a}_5&=&\lambda''\bm{a}_1+\mu''\bm{a}_2\\
+        &=&k(\lambda'\bm{a}_1+\mu'\bm{a}_2)\\
+        &=&k\bm{a}_4
+    \end{eqnarray*}より，$\bm{a}_4\sim\bm{a}_5$なので$A_4=A_5$となる．
+\end{proof}
+\begin{prop}
+    $\mathbb{P}^2$の異なる2直線$l,l'$の交点を$A$とする．そして$l$上に相異なる3点$A_i\ (i=1,2,3)$を$A$とは異なるようにとる．$l'$上にも同様に相異なる3点$A_i'\ (i=1,2,3)$を$A$とは異なるようにとる．このとき$R(A,A_1,A_2,A_3)=R(A,A_1',A_2',A_3')$ならば3直線$A_iA_i'\ (i=1,2,3)$は共点．
+\end{prop}
+\begin{proof}
+    2直線$A_1A_1',A_2A_2'$の交点を$S$とする．そして$SA_3$と$l'$の交点を$A_3''$とする．このとき$A_3'=A_3''$を示せばよい．
+    4直線$SA,SA_1',SA_2',SA_3''$は相異なるから，4点$A,A_1',A_2',A_3''$も相異なる．このとき系4.5から
+    $$R(A,A_1',A_2',A_3'')=R(A,A_1,A_2,A_3)=R(A,A_1',A_2',A_3')$$
+が成り立つ．命題4.6から$A_3'=A_3''$．
+\end{proof}
+\section{パップスの定理}
+第4節で定義した複比を用いてパップスの定理を証明します．この定理は4世紀前半の数学者，パップスによる定理です．パップスの定理は$\mathbb{P}^2$における定理といえるでしょう．
+\begin{theorem}[パップスの定理]
+    $\mathbb{P}^2$上に異なる2直線$l,m$があり$l$上に異なる3点$A_i\ (i=1,2,3)$と$m$上に異なる3点$B_i\ (i=1,2,3)$がある．2直線$A_2B_3$と$A_3B_2$の交点を$P_1$，2直線$A_3B_1$と$A_1B_3$の交点を$P_2$，2直線$A_1B_2$と$A_2B_1$の交点を$P_3$とすれば3点$P_1,P_2,P_3$は共線である．
+\end{theorem}
+\begin{proof}
+    $l$と$m$の交点を$S$とする．
+    \par$S$と$A_1,A_2,A_3,B_1,B_2,B_3$のいずれかが等しいときを考える．$S=A_1$としても一般性を失わないが，このとき$P_3=B_1=P_2$となり$P_1,P_2,P_3$が共線となる．
+    \par$S$が$A_1,A_2,A_3,B_1,B_2,B_3$のいずれとも異なるときを考える．$A_1$を中心とする線束$A_1S,A_1B_1,A_1B_2,A_1B_3$と2直線$m$および$A_3B_1$との交点の複比について系4.5より
+    \begin{equation}
+        R(S,B_1,B_2,B_3)=R(A_3,B_1,X,P_2)
+    \end{equation}
+    となる．ただし$X$は$A_1B_2$と$A_3B_1$の交点とした．
+    \par 次に点$A_2$を中心とする線束$A_2S,A_2B_1,A_2B_2,A_2B_3$と2直線$m$および$A_3B_2$との交点の複比について，系4.5より
+    \begin{equation}
+        R(S,B_1,B_2,B_3)=R(A_3,Y,B_2,P_1)
+    \end{equation}
+    となる．ただし$Y$は$A_2B_1$と$A_3B_2$の交点とした．
+    式(5.1)(5.2)より
+    $$R(A_3,B_1,X,P_2)=R(A_3,Y,B_2,P_1)$$
+    が成り立つ．命題4.7より3直線$B_1Y,XB_2,P_1P_2$は共点．
+    ここで$B_1Y=A_2B_1,\ XB_2=A_1B_2$より$B_1Y$と$XB_2$の交点は$P_3$であるから3点$P_1,P_2,P_3$は共線である．
+\end{proof}
+もちろんパップスの定理の双対定理も成り立ちます．
+\begin{theorem}[パップスの定理の双対定理]
+    $\mathbb{P}^2$上の異なる2点$L,M$と$L$を通る異なる3直線$a_i\ (i=1,2,3)$と$M$を通る異なる3直線$b_i\ (i=1,2,3)$が与えられたとする．
+    \par2直線$a_2,b_3$の交点を$U_1$，2直線$a_3,b_2$の交点を$V_1$，
+    \par2直線$a_3,b_1$の交点を$U_2$，2直線$a_1,b_3$の交点を$V_2$，
+    \par2直線$a_1,b_2$の交点を$U_3$，2直線$a_2,b_1$の交点を$V_3$
+    \\とすれば3直線$U_iV_i\ (i=1,2,3)$は共点．
+\end{theorem}
+\section{おわりに}
+ここまで読んでいただきありがとうございました．ここでは触れませんでしたが，写像$f$が
+$$f:\mathbb{P}^2\rightarrow\mathbb{P}^2\ ;[\bm{x}]\rightarrow[A\bm{x}]$$
+とある3次の正則行列$A$で表されるとき，（この定義で$f$が写像になっていることは容易に確かめられる．）写像$f$は射影変換と呼ばれます．実は射影変換の元で複比は不変量となっています．
+\begin{thebibliography}{3}
+\bibitem{b}
+太田春外．楽しもう射影平面-目で見る組合せトポロジーと射影幾何学-．日本評論社，2016．
+\bibitem{a}
+郡敏昭．射影平面の幾何学．遊星社，1988．
+\bibitem{c}
+岡山正歩．"ある双対性の周辺について-デザルグの定理からメネラウスの定理・チェバの定理へ"．1994．\url{https://core.ac.uk/download/pdf/196731932.pdf}，(参照 2023-10-11).
+\end{thebibliography}
+\end{document}
